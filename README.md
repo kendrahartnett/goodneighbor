@@ -33,3 +33,12 @@ Next.js App Router, React, TypeScript, Tailwind CSS, Neon PostgreSQL, Prisma wit
 ## Verification required at implementation time
 
 The exact current integration patterns and package compatibility for Next.js, Prisma, Auth.js, GitHub OAuth callbacks, and Vercel must be checked against their official documentation before implementation. The architectural intent in this package is stable; version-specific APIs are not assumed.
+
+
+## Author
+
+Kendra Anne Hartnett
+
+Github: [@kendrahartnett](https://github.com/kendrahartnett)
+
+Build with: Codex CLI 
