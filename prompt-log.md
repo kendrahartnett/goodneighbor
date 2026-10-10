@@ -44,3 +44,21 @@
 - Gives concrete visual feedback with references for brand, color, motion, homepage, and admin layouts.
 - Directs an iterative review loop and retains final design approval.
 - Balances presentation work with accessibility, responsive behavior, and functional verification.
+
+## Admin authentication flow repair — October 10, 2026
+
+> The admin login and logout, keeps sending me straight back into the dashboard, why am I not being redirected back to the github oauth sign in page? this need to be checked and fixed
+
+### Builder capabilities demonstrated
+
+- Identifies a real authentication-flow usability problem through hands-on testing.
+- Asks for both root-cause investigation and a verified correction, including the difference between app logout and GitHub's browser session.
+
+## Phase 5 approval — October 10, 2026
+
+> Approved. Move on to Phase 5
+
+### Builder capabilities demonstrated
+
+- Uses explicit phase approval to move from feature work into a release-quality gate.
+- Prioritizes tests, source verification, accessibility, safe database migration, and production configuration before launch.

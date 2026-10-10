@@ -1,6 +1,6 @@
 # GoodNeighbor
 
-GoodNeighbor is a polished local-discovery web app for finding verified volunteer opportunities in Chicago. This repository is intentionally a **planning handoff**: it contains the product, technical, design, build, and test specifications needed to implement the app, but no application code.
+GoodNeighbor is a Chicago volunteer-opportunity discovery app with public browsing and a single-admin editorial dashboard. The application is implemented through Phase 4; Phase 5 release verification is in progress. See [Phase 5 status](docs/PHASE5_STATUS.md) and the [release checklist](docs/RELEASE_CHECKLIST.md) before deployment.
 
 ## Product snapshot
 
@@ -41,4 +41,4 @@ Kendra Anne Hartnett
 
 Github: [@kendrahartnett](https://github.com/kendrahartnett)
 
-Build with: Codex CLI 
+Build with: Codex CLI
