@@ -22,6 +22,7 @@
 1. Define validation schema and REST route handlers.
 2. Build admin listing view and create/edit/publish/delete workflows using fetch-based CRUD.
 3. Add structured errors, confirmation for deletion, and verification-date cues.
+4. Add a visible admin sign-out control so the allowlisted and non-allowlisted GitHub journeys can be tested separately on a shared browser.
 
 **Acceptance:** admin can safely manage listings end to end; authorization and validation test cases pass.
 
