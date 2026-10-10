@@ -7,7 +7,8 @@ import { ListingCard } from "@/components/listing-card";
 
 const categories = ["ALL", "FOOD_SECURITY", "ENVIRONMENT", "YOUTH_COMMUNITY", "HOUSING_HEALTH"] as const;
 const timeTypes = ["ALL", "ONGOING", "DATE_SPECIFIC", "NEXT_OCCURRENCE"] as const;
-const label = (value: string) => value === "ALL" ? "All" : value.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, (letter) => letter.toUpperCase());
+const labels: Record<string, string> = { ALL: "All", FOOD_SECURITY: "Food & hunger", ENVIRONMENT: "Environment", YOUTH_COMMUNITY: "Youth & community", HOUSING_HEALTH: "Housing & health", ONGOING: "Ongoing", DATE_SPECIFIC: "Date specific", NEXT_OCCURRENCE: "Next occurrence" };
+const label = (value: string) => labels[value] ?? value.replaceAll("_", " ");
 
 export function OpportunityBrowserV2({ items }: { items: Opportunity[] }) {
   const searchParams = useSearchParams();
@@ -29,11 +30,10 @@ export function OpportunityBrowserV2({ items }: { items: Opportunity[] }) {
   }
   function reset() { setQuery(""); setCategory("ALL"); setTimeType("ALL"); router.replace(pathname, { scroll: false }); }
   return <>
-    <label htmlFor="opportunity-search">Search opportunities</label>
-    <input id="opportunity-search" value={query} onChange={(event) => { setQuery(event.target.value); update(event.target.value); }} placeholder="Organization, neighborhood, or interest" style={{ display: "block", width: "100%", padding: 12, margin: "8px 0 20px" }} />
-    <fieldset><legend>Category</legend>{categories.map((option) => <button type="button" aria-pressed={category === option} onClick={() => { setCategory(option); update(query, option); }} key={option}>{label(option)}</button>)}</fieldset>
-    <fieldset><legend>Availability</legend>{timeTypes.map((option) => <button type="button" aria-pressed={timeType === option} onClick={() => { setTimeType(option); update(query, category, option); }} key={option}>{label(option)}</button>)}</fieldset>
-    <p aria-live="polite">{filtered.length} {filtered.length === 1 ? "opportunity" : "opportunities"}</p>
-    {filtered.length ? <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 16 }}>{filtered.map((item) => <ListingCard key={item.id} item={item} />)}</div> : <div className="card"><h2>No opportunities match those filters.</h2><p>Try a broader search, or reset to see all verified Chicago listings.</p><button type="button" onClick={reset}>Clear filters</button></div>}
+    <div className="filter-panel"><div><label className="field-label" htmlFor="opportunity-search">Search opportunities</label><input id="opportunity-search" value={query} onChange={(event) => { setQuery(event.target.value); update(event.target.value); }} placeholder="Organization, neighborhood, or interest" /></div>
+    <fieldset><legend>Category</legend><div className="filter-options">{categories.map((option) => <button className="filter-option" type="button" aria-pressed={category === option} onClick={() => { setCategory(option); update(query, option); }} key={option}>{label(option)}</button>)}</div></fieldset>
+    <fieldset><legend>Availability</legend><div className="filter-options">{timeTypes.map((option) => <button className="filter-option" type="button" aria-pressed={timeType === option} onClick={() => { setTimeType(option); update(query, category, option); }} key={option}>{label(option)}</button>)}</div></fieldset></div>
+    <div className="result-summary"><p aria-live="polite">{filtered.length} {filtered.length === 1 ? "opportunity" : "opportunities"}</p><button className="button-quiet" type="button" onClick={reset}>Clear filters</button></div>
+    {filtered.length ? <div className="listing-grid">{filtered.map((item) => <ListingCard key={item.id} item={item} />)}</div> : <div className="card"><h2>No opportunities match those filters.</h2><p>Try a broader search, or reset to see all verified Chicago listings.</p><button className="button-quiet" type="button" onClick={reset}>Clear filters</button></div>}
   </>;
 }

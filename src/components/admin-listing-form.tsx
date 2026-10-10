@@ -22,7 +22,7 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
     verifiedAt: localDate(item?.verifiedAt) || localDate(new Date()), category: item?.category ?? "FOOD_SECURITY",
     dateType: item?.dateType ?? "ONGOING", status: item?.status ?? "DRAFT", startsAt: localDate(item?.startsAt), endsAt: localDate(item?.endsAt),
   };
-  const errorFor = (field: string) => fieldErrors[field] && <small role="alert" style={{ color: "#A33E35" }}>{fieldErrors[field]}</small>;
+  const errorFor = (field: string) => fieldErrors[field] && <small className="field-error" role="alert">{fieldErrors[field]}</small>;
 
   async function save(form: HTMLFormElement) {
     setBusy(true); setMessage(""); setFieldErrors({});
@@ -49,23 +49,28 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
     router.push("/admin"); router.refresh();
   }
 
-  return <form className="card" style={{ display: "grid", gap: 14, maxWidth: 760 }} onSubmit={(event) => { event.preventDefault(); void save(event.currentTarget); }}>
-    <label>URL slug<input required name="slug" defaultValue={initial.slug} /></label>{errorFor("slug")}
-    <label>Listing title<input required name="title" defaultValue={initial.title} /></label>{errorFor("title")}
-    <label>Organization<input required name="organizationName" defaultValue={initial.organizationName} /></label>{errorFor("organizationName")}
-    <label>Short summary<input required name="summary" maxLength={280} defaultValue={initial.summary} /></label>{errorFor("summary")}
-    <label>Description<textarea required name="description" rows={6} defaultValue={initial.description} /></label>{errorFor("description")}
-    <label>Chicago neighborhood or service area<input required name="neighborhood" defaultValue={initial.neighborhood} /></label>{errorFor("neighborhood")}
-    <label>Category<select name="category" defaultValue={initial.category}><option value="FOOD_SECURITY">Food security</option><option value="ENVIRONMENT">Environment</option><option value="YOUTH_COMMUNITY">Youth & community</option><option value="HOUSING_HEALTH">Housing & health</option></select></label>{errorFor("category")}
-    <label>Time type<select name="dateType" defaultValue={initial.dateType}><option value="ONGOING">Ongoing</option><option value="DATE_SPECIFIC">Date-specific</option><option value="NEXT_OCCURRENCE">Next occurrence</option></select></label>{errorFor("dateType")}
-    <label>Start date/time<input type="datetime-local" name="startsAt" defaultValue={initial.startsAt} /></label>{errorFor("startsAt")}
-    <label>End date/time<input type="datetime-local" name="endsAt" defaultValue={initial.endsAt} /></label>{errorFor("endsAt")}
-    <label>Organizer action URL<input required type="url" name="organizerUrl" defaultValue={initial.organizerUrl} /></label>{errorFor("organizerUrl")}
-    <label>Official source URL<input required type="url" name="sourceUrl" defaultValue={initial.sourceUrl} /></label>{errorFor("sourceUrl")}
-    <label>Last verified<input required type="datetime-local" name="verifiedAt" defaultValue={initial.verifiedAt} /></label>{errorFor("verifiedAt")}
-    <label>Publishing status<select name="status" defaultValue={initial.status}><option value="DRAFT">Draft — admin only</option><option value="PUBLISHED">Published — public</option></select></label>{errorFor("status")}
-    {message && <p role="alert">{message}</p>}
-    <button className="button" disabled={busy}>{busy ? "Saving…" : "Save listing"}</button>
-    {item && <button type="button" disabled={busy} onClick={() => void remove()} style={{ color: "#A33E35" }}>Delete listing</button>}
+  return <form className="card listing-form" onSubmit={(event) => { event.preventDefault(); void save(event.currentTarget); }}>
+    <section className="form-section"><h2>Opportunity basics</h2><p>Give visitors a clear, useful first impression.</p><div className="form-grid">
+      <label className="form-label">Listing title <span className="required">Required</span><input required name="title" defaultValue={initial.title} /></label>{errorFor("title")}
+      <label className="form-label">Organization <span className="required">Required</span><input required name="organizationName" defaultValue={initial.organizationName} /></label>{errorFor("organizationName")}
+      <label className="form-label full">Short summary <span className="required">Required</span><input required name="summary" maxLength={280} defaultValue={initial.summary} /></label>{errorFor("summary")}
+      <label className="form-label full">Description <span className="required">Required</span><textarea required name="description" rows={6} defaultValue={initial.description} /></label>{errorFor("description")}
+      <label className="form-label">URL slug <span className="required">Required</span><input required name="slug" defaultValue={initial.slug} /></label>{errorFor("slug")}
+      <label className="form-label">Category <select name="category" defaultValue={initial.category}><option value="FOOD_SECURITY">Food security</option><option value="ENVIRONMENT">Environment</option><option value="YOUTH_COMMUNITY">Youth & community</option><option value="HOUSING_HEALTH">Housing & health</option></select></label>{errorFor("category")}
+    </div></section>
+    <section className="form-section"><h2>Location & timing</h2><p>Dates are optional; use the time type to set expectations.</p><div className="form-grid">
+      <label className="form-label">Chicago neighborhood or service area <span className="required">Required</span><input required name="neighborhood" defaultValue={initial.neighborhood} /></label>{errorFor("neighborhood")}
+      <label className="form-label">Time type <select name="dateType" defaultValue={initial.dateType}><option value="ONGOING">Ongoing</option><option value="DATE_SPECIFIC">Date-specific</option><option value="NEXT_OCCURRENCE">Next occurrence</option></select></label>{errorFor("dateType")}
+      <label className="form-label">Start date/time<input type="datetime-local" name="startsAt" defaultValue={initial.startsAt} /></label>{errorFor("startsAt")}
+      <label className="form-label">End date/time<input type="datetime-local" name="endsAt" defaultValue={initial.endsAt} /></label>{errorFor("endsAt")}
+    </div></section>
+    <section className="form-section"><h2>Links & verification</h2><p>Published listings must point to official organizer information and include a verification date.</p><div className="form-grid">
+      <label className="form-label full">Organizer action URL <span className="required">Required</span><input required type="url" name="organizerUrl" defaultValue={initial.organizerUrl} /></label>{errorFor("organizerUrl")}
+      <label className="form-label full">Official source URL <span className="required">Required</span><input required type="url" name="sourceUrl" defaultValue={initial.sourceUrl} /></label>{errorFor("sourceUrl")}
+      <label className="form-label">Last verified <span className="required">Required</span><input required type="datetime-local" name="verifiedAt" defaultValue={initial.verifiedAt} /></label>{errorFor("verifiedAt")}
+      <label className="form-label">Publication status <select name="status" defaultValue={initial.status}><option value="DRAFT">Draft — admin only</option><option value="PUBLISHED">Published — public</option></select></label>{errorFor("status")}
+    </div></section>
+    {message && <p className="field-error" role="alert">{message}</p>}
+    <div className="form-actions"><button className="button" disabled={busy}>{busy ? "Saving…" : "Save listing"}</button>{item && <button className="delete-button" type="button" disabled={busy} onClick={() => void remove()}>Delete listing</button>}</div>
   </form>;
 }
