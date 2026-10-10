@@ -11,3 +11,36 @@
 - Designs a safe single-admin boundary and a validated REST CRUD surface.
 - Uses authoritative organizer sources and transparent verification dates instead of fabricated availability.
 - Builds in inspectable phases with tests and release checks.
+
+## Phase 4 — visual system and motion — October 10, 2026
+
+> Approved to continue and complete phase 4
+
+### Builder capabilities demonstrated
+
+- Establishes a coherent, reusable React component system rather than styling one-off pages.
+- Uses intentionally generated, non-organizer imagery with descriptive alt text and an image-failure fallback.
+- Builds an accessible, pausable slideshow with keyboard-reachable controls and a reduced-motion path.
+- Carries accessible visual conventions through navigation, cards, filters, forms, loading states, focus states, and responsive layouts.
+- Verifies the application through linting, type checks, automated tests, and a production build before handoff.
+
+## Design refinement — October 10, 2026
+
+> clean up the style and ui with this.
+
+### Builder capabilities demonstrated
+
+- Translates a detailed visual identity specification into a consistent production UI without expanding the v1 product scope.
+- Applies a token-based forest, cream, sage, terracotta, and ochre system across public discovery and editorial administration.
+- Improves the information hierarchy of search, details, dashboards, and authoring forms while preserving established React and REST behavior.
+- Uses optimized local imagery and accessible, motion-aware interaction patterns.
+
+## Logo, hero, and interface polish — October 10, 2026
+
+> I need you to polish the ui. I want the logo here that I sent to be the logo and I also want the image to be a hero section near the top of the homepage. I want you to add more to the design and really polish the ui. The buttons and spacing needs to be adjusted. Review everything after you update with these changes. and then I will review before we move on. Fix this.
+
+### Builder capabilities demonstrated
+
+- Gives concrete visual feedback with references for brand, color, motion, homepage, and admin layouts.
+- Directs an iterative review loop and retains final design approval.
+- Balances presentation work with accessibility, responsive behavior, and functional verification.

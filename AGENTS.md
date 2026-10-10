@@ -41,3 +41,13 @@ When documents disagree, follow this order: PRODUCT_SPEC, TECHNICAL_SPEC, DESIGN
 - Manually test the public and admin flows at desktop and narrow mobile widths.
 - Test keyboard-only behavior, visible focus, reduced motion, and an authenticated/unauthenticated admin boundary.
 - Recheck current official documentation for version-sensitive Auth.js, Prisma/Neon, Next.js, and Vercel setup.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
