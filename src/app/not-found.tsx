@@ -1,0 +1,1 @@
+import Link from "next/link"; export default function NotFound(){return <section className="shell" style={{paddingBlock:80}}><h1>Not found</h1><p>This opportunity may no longer be published.</p><Link href="/opportunities">Browse opportunities</Link></section>}

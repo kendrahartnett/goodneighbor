@@ -1,0 +1,2 @@
+import { prisma } from "@/lib/prisma"; import { OpportunityBrowser } from "@/components/opportunity-browser";
+export const metadata = { title:"Opportunities" }; export default async function Opportunities(){const items=await prisma.opportunity.findMany({where:{status:"PUBLISHED"},orderBy:{title:"asc"}});return <section className="shell" style={{paddingBlock:48}}><p>CHICAGO-ONLY VOLUNTEERING</p><h1>Opportunities</h1><OpportunityBrowser items={items}/></section>}

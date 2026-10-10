@@ -1,0 +1,36 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+enum OpportunityStatus { DRAFT PUBLISHED }
+enum DateType { ONGOING DATE_SPECIFIC NEXT_OCCURRENCE }
+enum Category { FOOD_SECURITY ENVIRONMENT YOUTH_COMMUNITY HOUSING_HEALTH }
+
+model Opportunity {
+  id String @id @default(cuid())
+  slug String @unique
+  title String
+  organizationName String
+  summary String @db.VarChar(280)
+  description String
+  category Category
+  neighborhood String
+  addressText String?
+  dateType DateType
+  startsAt DateTime?
+  endsAt DateTime?
+  timeZone String @default("America/Chicago")
+  commitmentText String?
+  accessibilityText String?
+  eligibilityText String?
+  imageUrl String?
+  imageAlt String?
+  organizerUrl String
+  sourceUrl String
+  verifiedAt DateTime
+  status OpportunityStatus @default(DRAFT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status])
+  @@index([category])
+  @@index([verifiedAt])
+}

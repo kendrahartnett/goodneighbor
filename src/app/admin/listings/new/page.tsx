@@ -1,0 +1,1 @@
+import { requireAdmin } from "@/lib/admin"; import { redirect } from "next/navigation"; import { AdminForm } from "@/components/admin-form"; export default async function New(){if(!(await requireAdmin()).ok)redirect("/admin");return <section className="shell" style={{paddingBlock:48}}><h1>Create listing</h1><AdminForm/></section>}
