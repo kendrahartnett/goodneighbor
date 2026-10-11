@@ -14,6 +14,12 @@
 - Use a separate GitHub OAuth app for the production hostname; its callback is `https://<production-host>/api/auth/callback/github`. The local app keeps `http://localhost:3000/api/auth/callback/github`.
 - Keep Preview `DATABASE_URL` and `DIRECT_URL` pointed at an isolated Neon branch, not production. Do not automatically seed previews.
 
+## Additive listing fields — October 10, 2026
+
+- Reuse the existing nullable `addressText` column for the requested Address field. Add nullable `phoneNumber` and `volunteerPositions` columns so the eight existing records do not receive fabricated contact details or positions.
+- Add `ANIMAL_WELFARE`, `SKILLS_BASED_VIRTUAL`, and `PUBLIC_SAFETY` to the PostgreSQL category enum in a committed Prisma migration. The new values are available for future verified admin records; do not change the current seed while official-source review is ongoing.
+- Prepare but do not apply this migration to an unconfirmed database target. Validate it on an isolated Neon branch using the direct URL before production deployment.
+
 ## Sources checked
 
 - https://authjs.dev/reference/nextjs

@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Opportunity } from "@prisma/client";
 import { ListingCard } from "@/components/listing-card";
+import { categories as listingCategories, categoryLabels } from "@/lib/categories";
 
-const categories = ["ALL", "FOOD_SECURITY", "ENVIRONMENT", "YOUTH_COMMUNITY", "HOUSING_HEALTH"] as const;
+const categories = ["ALL", ...listingCategories] as const;
 const timeTypes = ["ALL", "ONGOING", "DATE_SPECIFIC", "NEXT_OCCURRENCE"] as const;
-const labels: Record<string, string> = { ALL: "All", FOOD_SECURITY: "Food & hunger", ENVIRONMENT: "Environment", YOUTH_COMMUNITY: "Youth & community", HOUSING_HEALTH: "Housing & health", ONGOING: "Ongoing", DATE_SPECIFIC: "Date specific", NEXT_OCCURRENCE: "Next occurrence" };
+const labels: Record<string, string> = { ALL: "All", ...categoryLabels, ONGOING: "Ongoing", DATE_SPECIFIC: "Date specific", NEXT_OCCURRENCE: "Next occurrence" };
 const label = (value: string) => labels[value] ?? value.replaceAll("_", " ");
 
 export function OpportunityBrowserV2({ items }: { items: Opportunity[] }) {
@@ -18,7 +19,7 @@ export function OpportunityBrowserV2({ items }: { items: Opportunity[] }) {
   const [category, setCategory] = useState(searchParams.get("category") ?? "ALL");
   const [timeType, setTimeType] = useState(searchParams.get("time") ?? "ALL");
   const filtered = useMemo(() => items.filter((item) => {
-    const matchesQuery = `${item.title} ${item.organizationName} ${item.neighborhood} ${item.summary}`.toLowerCase().includes(query.toLowerCase());
+    const matchesQuery = `${item.title} ${item.organizationName} ${item.neighborhood} ${item.summary} ${item.volunteerPositions ?? ""}`.toLowerCase().includes(query.toLowerCase());
     return matchesQuery && (category === "ALL" || item.category === category) && (timeType === "ALL" || item.dateType === timeType);
   }), [items, query, category, timeType]);
   function update(nextQuery = query, nextCategory = category, nextTimeType = timeType) {

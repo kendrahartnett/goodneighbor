@@ -2,6 +2,8 @@
 
 Record the date, environment, and result for every item. Do not mark the release ready from a successful build alone.
 
+Production URL supplied by the owner: [goodneighbor-psi.vercel.app](https://goodneighbor-psi.vercel.app/). The October 10 browser pass was owner-approved for the previous build; repeat the affected layout and CRUD checks after this change is deployed.
+
 ## Automated gate
 
 - [ ] `npm ci`
@@ -11,6 +13,7 @@ Record the date, environment, and result for every item. Do not mark the release
 - [ ] `npm run build` (Prisma Client generation runs in `postinstall` during `npm ci`)
 - [ ] On an isolated Neon branch using its direct `DIRECT_URL`, `npm run db:deploy` and `npm run db:verify-seed`. Run `npm run db:seed` only when intentionally populating that branch; do not seed production automatically.
 - [ ] Confirm the database has exactly eight launch records, all published, Chicago-scoped, with official source/organizer URLs and genuine verification dates. Additional admin records must be accounted for separately.
+- [ ] Test the additive address/phone/positions/category migration on an isolated Neon branch before applying it to Production. Existing records should retain null contact/position fields until sourced.
 
 ## Manual browser gate
 
@@ -20,6 +23,7 @@ Record the date, environment, and result for every item. Do not mark the release
 - [ ] Create, edit, publish, unpublish, and delete a temporary draft on the isolated branch; check public visibility before and after publication. Verify useful field errors and deletion confirmation.
 - [ ] Test keyboard navigation, focus, labels/errors, slideshow controls, and reduced motion at desktop and narrow mobile widths. Check 200% zoom, image failure, and slow network states; test Chromium, Firefox, and Safari where available.
 - [ ] Verify Chicago-local date formatting and ongoing listings without fabricated dates.
+- [ ] Recheck the resized homepage hero and slightly smaller page headings at desktop/mobile, then create/edit a temporary listing with Address, Phone, Volunteer Positions, and each new category.
 
 ## Production setup and release
 
@@ -34,3 +38,4 @@ Record the date, environment, and result for every item. Do not mark the release
 
 - The repository is not linked to Vercel in this workspace, so production environment values, callbacks, preview behavior, and the live deployment cannot yet be verified here.
 - Source re-verification found that the seed calls Nourishing Hope by its former name, Lakeview Pantry. The Chicago HOPES for Kids official page currently says Spring 2026 volunteer recruitment is closed. Chicago Cares' listed URL did not respond to this check. Resolve all three before marking the eight listings verified and seeding production.
+- The owner supplied a responding Vercel URL and approved the previous browser pass, but this new UI/CRUD change needs focused browser regression testing. The currently configured local database branch has seven published records in the latest read-only check; its identity and the missing record need review before the eight-listing launch gate can pass.

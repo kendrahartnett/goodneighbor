@@ -25,6 +25,14 @@ describe("opportunities collection API", () => {
     expect(count.mock.calls[0][0].where.status).toBe("PUBLISHED");
   });
 
+  it("includes volunteer positions in public keyword search", async () => {
+    findMany.mockResolvedValue([]);
+    count.mockResolvedValue(0);
+    await GET(new NextRequest("http://localhost/api/opportunities?q=mentor"));
+    const fields = findMany.mock.calls[0][0].where.OR.map((part: Record<string, unknown>) => Object.keys(part)[0]);
+    expect(fields).toContain("volunteerPositions");
+  });
+
   it("denies an anonymous create before touching the database", async () => {
     requireAdmin.mockResolvedValue({ ok: false, status: 401 });
     const response = await POST(new Request("http://localhost/api/opportunities", { method: "POST", body: "{}" }));
@@ -41,5 +49,31 @@ describe("opportunities collection API", () => {
     expect(body.error.code).toBe("VALIDATION");
     expect(body.error.fields.title).toBeTruthy();
     expect(create).not.toHaveBeenCalled();
+  });
+
+  it("creates a draft with the new optional contact and position fields", async () => {
+    requireAdmin.mockResolvedValue({ ok: true });
+    create.mockImplementation(async ({ data }) => ({ id: "new", ...data }));
+    const payload = {
+      slug: "garden-helper", title: "Garden Helper", organizationName: "Example organizer",
+      summary: "Help care for a local community garden.",
+      description: "Help care for a local community garden alongside other volunteers.",
+      category: "SKILLS_BASED_VIRTUAL", neighborhood: "Chicago",
+      addressText: "123 Example St", phoneNumber: "+1 (312) 555-0100",
+      volunteerPositions: "Outreach and volunteer coordination",
+      dateType: "ONGOING", organizerUrl: "https://example.org/volunteer",
+      sourceUrl: "https://example.org/volunteer", verifiedAt: "2026-10-10T12:00:00.000Z",
+    };
+    const response = await POST(new Request("http://localhost/api/opportunities", {
+      method: "POST", body: JSON.stringify(payload),
+    }));
+    expect(response.status).toBe(201);
+    expect(create.mock.calls[0][0].data).toMatchObject({
+      addressText: payload.addressText,
+      phoneNumber: payload.phoneNumber,
+      volunteerPositions: payload.volunteerPositions,
+      category: payload.category,
+      status: "DRAFT",
+    });
   });
 });

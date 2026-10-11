@@ -1,11 +1,63 @@
 import { z } from "zod";
-export const categories = ["FOOD_SECURITY", "ENVIRONMENT", "YOUTH_COMMUNITY", "HOUSING_HEALTH"] as const;
+import { categories } from "./categories";
+
+export { categories } from "./categories";
 export const dateTypes = ["ONGOING", "DATE_SPECIFIC", "NEXT_OCCURRENCE"] as const;
-const url = z.string().url().refine((v) => v.startsWith("https://") || v.startsWith("http://"), "Use an http(s) URL");
-export const opportunitySchema = z.object({
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(100), title: z.string().min(3).max(150), organizationName: z.string().min(2).max(150), summary: z.string().min(10).max(280), description: z.string().min(20).max(5000), category: z.enum(categories), neighborhood: z.string().min(2).max(160), addressText: z.string().max(200).optional().nullable(), dateType: z.enum(dateTypes), startsAt: z.string().datetime().optional().nullable(), endsAt: z.string().datetime().optional().nullable(), timeZone: z.literal("America/Chicago").default("America/Chicago"), commitmentText: z.string().max(500).optional().nullable(), accessibilityText: z.string().max(500).optional().nullable(), eligibilityText: z.string().max(500).optional().nullable(), imageUrl: url.optional().nullable(), imageAlt: z.string().max(250).optional().nullable(), organizerUrl: url, sourceUrl: url, verifiedAt: z.string().datetime(), status: z.enum(["DRAFT", "PUBLISHED"]).default("DRAFT")
-}).superRefine((v, ctx) => { if (v.dateType === "DATE_SPECIFIC" && !v.startsAt) ctx.addIssue({ code: "custom", path: ["startsAt"], message: "A date-specific listing needs a start time." }); if (v.endsAt && v.startsAt && new Date(v.endsAt) < new Date(v.startsAt)) ctx.addIssue({ code: "custom", path: ["endsAt"], message: "End time must be after start time." }); if (v.imageUrl && !v.imageAlt) ctx.addIssue({ code: "custom", path: ["imageAlt"], message: "Image alt text is required when an image is supplied." }); });
-export const opportunityPatchSchema = z.object({
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(100).optional(), title: z.string().min(3).max(150).optional(), organizationName: z.string().min(2).max(150).optional(), summary: z.string().min(10).max(280).optional(), description: z.string().min(20).max(5000).optional(), category: z.enum(categories).optional(), neighborhood: z.string().min(2).max(160).optional(), addressText: z.string().max(200).nullable().optional(), dateType: z.enum(dateTypes).optional(), startsAt: z.string().datetime().nullable().optional(), endsAt: z.string().datetime().nullable().optional(), timeZone: z.literal("America/Chicago").optional(), commitmentText: z.string().max(500).nullable().optional(), accessibilityText: z.string().max(500).nullable().optional(), eligibilityText: z.string().max(500).nullable().optional(), imageUrl: url.nullable().optional(), imageAlt: z.string().max(250).nullable().optional(), organizerUrl: url.optional(), sourceUrl: url.optional(), verifiedAt: z.string().datetime().optional(), status: z.enum(["DRAFT", "PUBLISHED"]).optional()
+
+const url = z.string().url().refine(
+  (value) => value.startsWith("https://") || value.startsWith("http://"),
+  "Use an http(s) URL",
+);
+const optionalText = (max: number) => z.string().trim().max(max).nullable().optional();
+const phoneNumber = z.string().trim().min(7).max(40).refine(
+  (value) => /^[+0-9().\-\s]+(?:\s*(?:x|ext\.?)\s*\d+)?$/i.test(value) && value.replace(/\D/g, "").length >= 7,
+  "Enter a valid phone number",
+).nullable().optional();
+
+const opportunityFields = z.object({
+  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(100),
+  title: z.string().min(3).max(150),
+  organizationName: z.string().min(2).max(150),
+  summary: z.string().min(10).max(280),
+  description: z.string().min(20).max(5000),
+  category: z.enum(categories),
+  neighborhood: z.string().min(2).max(160),
+  addressText: optionalText(200),
+  phoneNumber,
+  volunteerPositions: optionalText(1500),
+  dateType: z.enum(dateTypes),
+  startsAt: z.string().datetime().nullable().optional(),
+  endsAt: z.string().datetime().nullable().optional(),
+  timeZone: z.literal("America/Chicago").default("America/Chicago"),
+  commitmentText: optionalText(500),
+  accessibilityText: optionalText(500),
+  eligibilityText: optionalText(500),
+  imageUrl: url.nullable().optional(),
+  imageAlt: optionalText(250),
+  organizerUrl: url,
+  sourceUrl: url,
+  verifiedAt: z.string().datetime(),
+  status: z.enum(["DRAFT", "PUBLISHED"]).default("DRAFT"),
 });
-export function errors(error: z.ZodError) { return Object.fromEntries(error.issues.map(i => [i.path.join("."), i.message])); }
+
+function checkOpportunity(
+  value: z.infer<typeof opportunityFields>,
+  ctx: z.RefinementCtx,
+) {
+  if (value.dateType === "DATE_SPECIFIC" && !value.startsAt) {
+    ctx.addIssue({ code: "custom", path: ["startsAt"], message: "A date-specific listing needs a start time." });
+  }
+  if (value.endsAt && value.startsAt && new Date(value.endsAt) < new Date(value.startsAt)) {
+    ctx.addIssue({ code: "custom", path: ["endsAt"], message: "End time must be after start time." });
+  }
+  if (value.imageUrl && !value.imageAlt) {
+    ctx.addIssue({ code: "custom", path: ["imageAlt"], message: "Image alt text is required when an image is supplied." });
+  }
+}
+
+export const opportunitySchema = opportunityFields.superRefine(checkOpportunity);
+export const opportunityPatchSchema = opportunityFields.partial();
+
+export function errors(error: z.ZodError) {
+  return Object.fromEntries(error.issues.map((issue) => [issue.path.join("."), issue.message]));
+}

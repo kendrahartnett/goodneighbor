@@ -24,6 +24,9 @@ enum Category {
   ENVIRONMENT
   YOUTH_COMMUNITY
   HOUSING_HEALTH
+  ANIMAL_WELFARE
+  SKILLS_BASED_VIRTUAL
+  PUBLIC_SAFETY
 }
 
 model Opportunity {
@@ -36,6 +39,8 @@ model Opportunity {
   category Category
   neighborhood String
   addressText String?
+  phoneNumber String?
+  volunteerPositions String?
   dateType DateType
   startsAt DateTime?
   endsAt DateTime?

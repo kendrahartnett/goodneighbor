@@ -62,3 +62,13 @@
 
 - Uses explicit phase approval to move from feature work into a release-quality gate.
 - Prioritizes tests, source verification, accessibility, safe database migration, and production configuration before launch.
+
+## Phase 5 review and schema expansion — October 10, 2026
+
+> for phase 5 status update: the vercel project link is: goodneighbor-psi.vercel.app. I verified all of the browser automation and I approve. I want you to correct that the hero image on the landing page needs to be a little smaller to fit the screen. The header text on the top of all the pages can be slightly smaller. I am verifying and reviewing the offical sources for the data seed. Add to the schema: Address, Phone, and Volunteer Positions to be a part of the CRUD. Volunteer categories also needs to include: Animal Welfare, Skills-Based & Virtual Volunteering, Public Safety. I will continue to review official sources and update data at a later testing time
+
+### Builder capabilities demonstrated
+
+- Supplies a live deployment URL and explicitly signs off on browser testing while keeping release judgment separate from the latest requested changes.
+- Gives precise visual feedback on hero scale and page-heading hierarchy.
+- Expands the editorial content model intentionally while preserving the eight existing records for later official-source review.

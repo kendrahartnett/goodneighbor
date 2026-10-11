@@ -2,6 +2,15 @@
 
 Phase 5 is in progress, **not release-approved**. No Vercel or production database changes were made in this pass.
 
+## Owner update — October 10, 2026
+
+- The owner provided the production URL [goodneighbor-psi.vercel.app](https://goodneighbor-psi.vercel.app/) and approved their browser-automation review of the prior build. A read-only HEAD request returned HTTP 200. This does not verify the deployed commit, production environment variables, or OAuth callback.
+- The owner is reviewing the eight official seed sources and will update content at a later testing time. Seed records have therefore not been changed or re-seeded.
+- The owner requested a smaller landing hero, slightly smaller page headings, optional Address/Phone/Volunteer Positions in admin CRUD and public details, and three additional categories. A new additive migration has been prepared but **not applied to any database**. The existing `addressText` field is the Address field; only `phoneNumber` and `volunteerPositions` require new columns.
+- For this change, Prisma schema validation and Client generation passed; lint, typecheck, 20 automated tests, and production build passed. A read-only migration-status check found the new migration pending on the currently configured branch, as intended.
+- The latest read-only seed check on the currently configured branch reports `{ total: 7, published: 7, valid: true }`, down from eight in the earlier check. No seed data was changed during this work. The reason for the missing record and whether this branch is production are unconfirmed; do not reseed while the owner is reviewing official sources.
+- The previous browser approval does not cover these latest UI/CRUD changes; a focused regression pass is still required.
+
 ## Completed locally
 
 - `npm run lint`, `npm run typecheck`, `npm test` (9 tests), and `npm run build` passed.
@@ -11,7 +20,7 @@ Phase 5 is in progress, **not release-approved**. No Vercel or production databa
 
 ## Not completed / release blockers
 
-- Browser automation could not initialize on this machine, so manual visual, keyboard, reduced-motion, narrow-mobile, 200% zoom, and cross-browser checks remain open. The allowlisted/non-allowlisted GitHub OAuth and full CRUD journeys also require hands-on browser verification.
-- The workspace is not linked to a Vercel project. Production/Preview environment separation, the production OAuth callback, preview deployment, and live deployment have not been verified.
+- The earlier browser automation could not initialize here. The owner reports completing and approving their browser review for the previous build. The new hero, headings, and CRUD fields still need review after deployment.
+- The production URL is known and responds, but this workspace has no confirmed local Vercel CLI link. Production/Preview environment separation, OAuth callback, and deployed revision have not been independently verified.
 - The eight-record seed check validates presence and shape, not current availability or link accuracy. Official-source review found the Nourishing Hope rebrand, a Chicago HOPES for Kids recruitment-closed notice, and an unresponsive Chicago Cares URL. Resolve those content issues and recheck all eight official links before production seeding or release.
 - A fresh install (`npm ci`) and migration deployment on a confirmed isolated Neon branch remain to be exercised. Do not run migrations on an unconfirmed target.

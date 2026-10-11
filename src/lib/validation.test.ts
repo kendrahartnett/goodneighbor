@@ -34,4 +34,22 @@ describe("opportunity validation", () => {
     expect(opportunitySchema.safeParse({ ...valid, organizerUrl: "javascript:alert(1)" }).success).toBe(false);
     expect(opportunitySchema.safeParse({ ...valid, imageUrl: "https://example.org/photo.jpg" }).success).toBe(false);
   });
+
+  it.each(["ANIMAL_WELFARE", "SKILLS_BASED_VIRTUAL", "PUBLIC_SAFETY"])(
+    "accepts the %s category",
+    (category) => expect(opportunitySchema.safeParse({ ...valid, category }).success).toBe(true),
+  );
+
+  it("accepts optional address, phone, and volunteer positions", () => {
+    expect(opportunitySchema.safeParse({
+      ...valid,
+      addressText: "123 Example St, Chicago, IL",
+      phoneNumber: "+1 (312) 555-0100",
+      volunteerPositions: "Garden assistant; outreach volunteer",
+    }).success).toBe(true);
+  });
+
+  it("rejects an invalid phone number", () => {
+    expect(opportunitySchema.safeParse({ ...valid, phoneNumber: "call me" }).success).toBe(false);
+  });
 });

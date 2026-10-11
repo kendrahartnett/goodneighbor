@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Opportunity } from "@prisma/client";
+import { categories, categoryLabels } from "@/lib/categories";
 
 type FieldErrors = Record<string, string>;
 
@@ -18,6 +19,8 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
   const initial = {
     slug: item?.slug ?? "", title: item?.title ?? "", organizationName: item?.organizationName ?? "",
     summary: item?.summary ?? "", description: item?.description ?? "", neighborhood: item?.neighborhood ?? "",
+    addressText: item?.addressText ?? "", phoneNumber: item?.phoneNumber ?? "",
+    volunteerPositions: item?.volunteerPositions ?? "",
     organizerUrl: item?.organizerUrl ?? "", sourceUrl: item?.sourceUrl ?? "",
     verifiedAt: localDate(item?.verifiedAt) || localDate(new Date()), category: item?.category ?? "FOOD_SECURITY",
     dateType: item?.dateType ?? "ONGOING", status: item?.status ?? "DRAFT", startsAt: localDate(item?.startsAt), endsAt: localDate(item?.endsAt),
@@ -26,8 +29,11 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
 
   async function save(form: HTMLFormElement) {
     setBusy(true); setMessage(""); setFieldErrors({});
-    const values = Object.fromEntries(new FormData(form));
+    const values: Record<string, string | null> = Object.fromEntries(new FormData(form)) as Record<string, string>;
     const startsAt = String(values.startsAt || ""); const endsAt = String(values.endsAt || "");
+    for (const field of ["addressText", "phoneNumber", "volunteerPositions"] as const) {
+      if (!String(values[field] ?? "").trim()) values[field] = null;
+    }
     const response = await fetch(item ? `/api/opportunities/${item.id}` : "/api/opportunities", {
       method: item ? "PATCH" : "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ ...values, startsAt: startsAt ? new Date(startsAt).toISOString() : null, endsAt: endsAt ? new Date(endsAt).toISOString() : null, verifiedAt: new Date(String(values.verifiedAt)).toISOString() }),
@@ -56,10 +62,13 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
       <label className="form-label full">Short summary <span className="required">Required</span><input required name="summary" maxLength={280} defaultValue={initial.summary} /></label>{errorFor("summary")}
       <label className="form-label full">Description <span className="required">Required</span><textarea required name="description" rows={6} defaultValue={initial.description} /></label>{errorFor("description")}
       <label className="form-label">URL slug <span className="required">Required</span><input required name="slug" defaultValue={initial.slug} /></label>{errorFor("slug")}
-      <label className="form-label">Category <select name="category" defaultValue={initial.category}><option value="FOOD_SECURITY">Food security</option><option value="ENVIRONMENT">Environment</option><option value="YOUTH_COMMUNITY">Youth & community</option><option value="HOUSING_HEALTH">Housing & health</option></select></label>{errorFor("category")}
+      <label className="form-label">Category <select name="category" defaultValue={initial.category}>{categories.map((category) => <option key={category} value={category}>{categoryLabels[category]}</option>)}</select></label>{errorFor("category")}
     </div></section>
     <section className="form-section"><h2>Location & timing</h2><p>Dates are optional; use the time type to set expectations.</p><div className="form-grid">
       <label className="form-label">Chicago neighborhood or service area <span className="required">Required</span><input required name="neighborhood" defaultValue={initial.neighborhood} /></label>{errorFor("neighborhood")}
+      <label className="form-label">Address (optional)<input name="addressText" maxLength={200} defaultValue={initial.addressText} placeholder="Only when the organizer provides one" /></label>{errorFor("addressText")}
+      <label className="form-label">Phone (optional)<input type="tel" name="phoneNumber" maxLength={40} defaultValue={initial.phoneNumber} autoComplete="tel" placeholder="Organizer contact number" /></label>{errorFor("phoneNumber")}
+      <label className="form-label full">Volunteer positions (optional)<textarea name="volunteerPositions" maxLength={1500} rows={3} defaultValue={initial.volunteerPositions} placeholder="Describe positions confirmed by the organizer" /></label>{errorFor("volunteerPositions")}
       <label className="form-label">Time type <select name="dateType" defaultValue={initial.dateType}><option value="ONGOING">Ongoing</option><option value="DATE_SPECIFIC">Date-specific</option><option value="NEXT_OCCURRENCE">Next occurrence</option></select></label>{errorFor("dateType")}
       <label className="form-label">Start date/time<input type="datetime-local" name="startsAt" defaultValue={initial.startsAt} /></label>{errorFor("startsAt")}
       <label className="form-label">End date/time<input type="datetime-local" name="endsAt" defaultValue={initial.endsAt} /></label>{errorFor("endsAt")}

@@ -41,9 +41,11 @@ Implement the following conceptual models using Prisma. Names may be idiomatic b
 | `organizationName` | required |
 | `summary` | required, short public copy |
 | `description` | required, longer public copy |
-| `category` | required controlled string/enum |
+| `category` | required controlled enum; includes food security, environment, youth/community, housing/health, animal welfare, skills-based/virtual volunteering, and public safety |
 | `neighborhood` | required Chicago neighborhood or service-area text |
 | `addressText` | optional; do not require precise address |
+| `phoneNumber` | optional organizer contact number; publish only when supported by the official source |
+| `volunteerPositions` | optional free-text summary of verified volunteer roles; do not imply unverified openings |
 | `dateType` | `ONGOING`, `DATE_SPECIFIC`, or `NEXT_OCCURRENCE` |
 | `startsAt` / `endsAt` | optional timestamp; required only when applicable |
 | `timeZone` | default `America/Chicago` |

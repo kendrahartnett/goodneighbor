@@ -34,7 +34,7 @@ GoodNeighbor helps Chicago residents discover trustworthy local volunteer opport
 
 ### Opportunity fields visible to visitors
 
-Title; organization; concise summary; longer description; Chicago neighborhood or service area; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; cover image; organizer action URL; verification date; and source/organizer attribution.
+Title; organization; concise summary; longer description; Chicago neighborhood or service area; optional address, phone, and volunteer positions when verified; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; cover image; organizer action URL; verification date; and source/organizer attribution.
 
 ## 5. Content model and listing states
 
