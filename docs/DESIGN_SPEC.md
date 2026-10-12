@@ -52,7 +52,9 @@ Motion should make the interface feel attentive, not busy: 150–250ms transitio
 
 ### Home
 
-Hero slideshow, Chicago-specific headline, primary discovery action, featured listings, an editorial “how it works” strip, and a verification statement. The first screen should communicate place, purpose, and action within seconds.
+Hero slideshow with the exact headline “A little good goes a long way.” on one line at normal desktop width, Chicago-specific introduction, primary discovery action, newest listings, an editorial “how it works” strip, verification statement, and an accessible listing suggestion form with a focus-managed confirmation dialog. Narrow screens may wrap the headline naturally.
+
+The slideshow and About page use original generated, candid-style volunteer imagery inspired by community gardening, food-pantry teamwork, and neighborhood cleanup. The garden scene leads the slideshow. Label the images as illustrative and do not associate them with any specific listing or organizer.
 
 ### Opportunities index
 
@@ -68,7 +70,9 @@ Mission, Chicago scope, what “verified” means, and the limitation that GoodN
 
 ### Admin
 
-Functional over decorative: listing status, verification freshness, edit/create forms, submit feedback, and explicit delete confirmation. It shares the visual system but keeps interactions sober and fast.
+Functional over decorative: a compact table, listing status, verification freshness, request inbox, edit/create forms with optional photo upload and alt text, submit feedback, and explicit delete confirmation. The sign-in card is centered in the available page area. It shares the visual system but keeps interactions sober and fast.
+
+General headings, card padding, metadata, buttons, and spacing use a more concise scale while maintaining readable body text, focus visibility, touch targets, and the earthy editorial palette. A listing without a photo has a complete text-first card and detail page; no placeholder box is shown.
 
 ## 8. Accessibility baseline
 

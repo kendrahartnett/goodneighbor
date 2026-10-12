@@ -14,6 +14,8 @@ Production URL supplied by the owner: [goodneighbor-psi.vercel.app](https://good
 - [ ] On an isolated Neon branch using its direct `DIRECT_URL`, `npm run db:deploy` and `npm run db:verify-seed`. Run `npm run db:seed` only when intentionally populating that branch; do not seed production automatically.
 - [ ] Confirm the database has exactly eight launch records, all published, Chicago-scoped, with official source/organizer URLs and genuine verification dates. Additional admin records must be accounted for separately.
 - [ ] Test the additive address/phone/positions/category migration on an isolated Neon branch before applying it to Production. Existing records should retain null contact/position fields until sourced.
+- [ ] Test the new publication/request migration on an isolated Neon branch. Confirm historical published rows received `createdAt` as the publication fallback and new publish transitions sort first.
+- [ ] Connect one private Vercel Blob store to Development, Preview, and Production; confirm `BLOB_READ_WRITE_TOKEN` locally or connected-store OIDC credentials on Vercel without printing values.
 
 ## Manual browser gate
 
@@ -24,6 +26,8 @@ Production URL supplied by the owner: [goodneighbor-psi.vercel.app](https://good
 - [ ] Test keyboard navigation, focus, labels/errors, slideshow controls, and reduced motion at desktop and narrow mobile widths. Check 200% zoom, image failure, and slow network states; test Chromium, Firefox, and Safari where available.
 - [ ] Verify Chicago-local date formatting and ongoing listings without fabricated dates.
 - [ ] Recheck the resized homepage hero and slightly smaller page headings at desktop/mobile, then create/edit a temporary listing with Address, Phone, Volunteer Positions, and each new category.
+- [ ] Check one-line desktop hero, natural mobile wrap, centered admin sign-in, compact dashboard, About page images and captions, photo/no-photo listing layouts, and image-load failure behavior.
+- [ ] Submit a visitor listing request with and without a photo; verify field errors, success dialog focus/Escape/close, admin-only inbox/detail/photo, and newest-first order. Verify the on-screen promise has an operational follow-up for confirmation if published.
 
 ## Production setup and release
 
@@ -33,6 +37,7 @@ Production URL supplied by the owner: [goodneighbor-psi.vercel.app](https://good
 4. Test the committed migration on a Neon branch of production. After review, deliberately run `npm run db:deploy` against the intended production direct URL. Never use `db push` or a Vercel preview build to migrate production.
 5. Intentionally seed the production database once, only after reviewing the eight current official source links and the target branch. Do not seed through an automatic deployment hook; subsequent admin edits must not be overwritten by a repeat seed.
 6. Deploy a Vercel preview using its isolated database and exercise the manual gate. Then deploy to Production and repeat the anonymous, admin OAuth, external-link, and database-count checks on the live hostname.
+7. Apply the new committed migration to the intended production direct URL before deploying code that queries `ListingRequest` or `publishedAt`. Configure Blob storage before enabling photo upload in Production.
 
 ## Current open release blockers
 

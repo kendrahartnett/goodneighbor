@@ -9,7 +9,7 @@ export default async function AdminSignIn({ searchParams }: { searchParams: Prom
   const session = await auth();
   const signedOut = (await searchParams).signedOut === "1";
 
-  return <section className="shell admin-page"><div className="admin-notice">
+  return <section className="shell admin-signin-shell"><div className="admin-notice">
     <p className="eyebrow">MANAGEMENT</p>
     <h1>Admin sign-in</h1>
     {session ? <>

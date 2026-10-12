@@ -15,9 +15,14 @@ Use a single Next.js App Router application deployed on Vercel. React server com
 | `/admin` | Allowlisted admin | Listing management dashboard |
 | `/admin/listings/new` | Allowlisted admin | Create form |
 | `/admin/listings/[id]` | Allowlisted admin | Edit form |
+| `/admin/requests` and `/admin/requests/[id]` | Allowlisted admin | Private request inbox and detail |
 | `/api/auth/[...auth]` | OAuth protocol | Auth.js handler; exact path must match current integration guidance |
 | `/api/opportunities` | Public GET; admin POST | List public records / create |
 | `/api/opportunities/[id]` | Public GET only for published; admin PATCH/DELETE | Read/mutate one record |
+| `/api/admin/photos` | Allowlisted admin POST | Validate and upload a listing photo |
+| `/api/opportunities/[id]/photo` | Public for published, admin for drafts | Stream a private Blob image |
+| `/api/listing-requests` | Public POST; admin GET | Create a private request / read inbox |
+| `/api/listing-requests/[id]` and `/photo` | Allowlisted admin GET | Read private request and photo |
 
 The exact Auth.js route location and configuration syntax are version-sensitive. Verify the currently supported Next.js App Router integration before coding.
 
@@ -59,6 +64,11 @@ Implement the following conceptual models using Prisma. Names may be idiomatic b
 | `verifiedAt` | required timestamp |
 | `status` | `DRAFT` or `PUBLISHED` |
 | `createdAt`, `updatedAt` | timestamps |
+| `publishedAt` | nullable publication timestamp; set on transition to published, cleared on draft |
+
+### ListingRequest
+
+Private record with `id`, required `name`, `contactInformation`, `email`, and `description`, nullable `photoUrl`, and `createdAt`. No public request read route or public tracking identifier is exposed.
 
 Use appropriate indexes for public query patterns: `status`, `slug`, category, and optionally verified date. `slug` is unique. Do not make a date mandatory.
 
@@ -111,3 +121,5 @@ Use 400 for malformed input, 401 for absent session, 403 for non-admin session, 
 - Use `noopener noreferrer` for external new-tab links.
 - Keep API error messages safe and generic around auth/database faults.
 - Provide an error boundary and useful empty/loading states. Do not claim live availability.
+- Vercel Blob stores uploaded JPEG/PNG/WebP files in a private store; PostgreSQL stores only URLs. Server uploads are capped at 3 MB with MIME and file-signature checks. Private photos are streamed through access-checked route handlers. Set `BLOB_READ_WRITE_TOKEN` locally and in Vercel, or use Vercel's connected-store OIDC runtime credentials (`BLOB_STORE_ID` with managed `VERCEL_OIDC_TOKEN`). No token reaches browser code. The 3 MB cap stays below Vercel's 4.5 MB function body limit.
+- Public suggestion writes validate names, contact details, email, description, and optional photo. Admin authorization is checked for every request read and photo read. The success dialog uses native modal focus/Escape behavior.

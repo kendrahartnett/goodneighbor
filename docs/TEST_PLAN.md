@@ -19,6 +19,10 @@ Use a layered approach: unit tests for pure validation/formatting, route/API int
 | UX | Clear loading, error, empty, and success feedback; controls work on narrow screens |
 | Accessibility | Keyboard pass, focus visibility, labels/errors, contrast, screen-reader names, reduced-motion slideshow/loader |
 | Deployment | Production build succeeds; environment variables configured; OAuth production callback verified; migration strategy exercised safely |
+| Photos | Optional admin upload accepts valid JPEG/PNG/WebP under 3 MB, rejects invalid type/content/size and unauthorized uploads; photo and no-photo cards/details render without broken boxes |
+| Requests | Public submission validates fields/photo, persists privately, shows keyboard accessible modal; anonymous inbox/photo reads are denied; admin inbox/detail newest first |
+| Publication order | Home, index, and public API sort by `publishedAt DESC, id DESC`; status transitions update timestamp; no client re-sort |
+| Responsive layout | Desktop hero headline stays on one line without overflow; mobile wraps naturally; admin sign-in stays centered; focus, zoom, and reduced motion remain usable |
 
 ## Core end-to-end scenarios
 

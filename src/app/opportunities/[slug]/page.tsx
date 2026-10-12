@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { categoryLabels } from "@/lib/categories";
+import { ListingPhoto } from "@/components/listing-photo";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -30,6 +31,7 @@ export default async function Detail({ params }: { params: Promise<{ slug: strin
   return <article className="shell detail-page">
     <Link className="breadcrumb" href="/opportunities">← Back to opportunities</Link>
     <header className="detail-header"><span className="detail-badge">{categoryLabels[item.category]}</span><h1>{item.title}</h1><p className="detail-summary">{item.summary}</p></header>
+    {item.imageUrl && item.imageAlt && <ListingPhoto id={item.id} url={item.imageUrl} alt={item.imageAlt} variant="detail" />}
     <dl className="detail-facts">{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
     <p className="detail-copy">{item.description}</p>
     {item.volunteerPositions && <section className="detail-copy"><h2>Volunteer positions</h2><p>{item.volunteerPositions}</p></section>}

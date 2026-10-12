@@ -25,13 +25,17 @@ export default async function Admin() {
     );
   }
 
-  const items = await prisma.opportunity.findMany({ orderBy: { updatedAt: "desc" } });
+  const [items, requestCount] = await Promise.all([
+    prisma.opportunity.findMany({ orderBy: [{ updatedAt: "desc" }, { id: "desc" }] }),
+    prisma.listingRequest.count(),
+  ]);
   const published = items.filter((item) => item.status === "PUBLISHED").length;
   return (
     <section className="shell admin-page">
       <div className="admin-header">
-        <div><p className="eyebrow">MANAGEMENT</p><h1>Your dashboard</h1></div>
+        <div><p className="eyebrow">MANAGEMENT</p><h1>Dashboard</h1><p className="muted">Keep Chicago opportunities accurate and ready to explore.</p></div>
         <div className="admin-actions">
+          <Link className="button-secondary" href="/admin/requests">Listing Requests <span className="inbox-pill">{requestCount}</span></Link>
           <Link className="button" href="/admin/listings/new">New opportunity</Link>
           <form action={signOutAdmin}><button className="button-quiet" type="submit">Sign out</button></form>
         </div>
@@ -41,7 +45,8 @@ export default async function Admin() {
         <div className="stat-card"><strong>{published}</strong><span>Published</span></div>
         <div className="stat-card"><strong>{items.length - published}</strong><span>Drafts</span></div>
       </div>
-      <div className="admin-table-wrap">
+      <div className="admin-list-heading"><div><h2>Opportunities</h2><p>Review verification dates before publishing.</p></div><span>{items.length} total</span></div>
+      {items.length ? <div className="admin-table-wrap">
         <table className="admin-table">
           <thead><tr><th>Opportunity</th><th>Status</th><th>Verified</th><th><span className="sr-only">Actions</span></th></tr></thead>
           <tbody>{items.map((item) => (
@@ -53,7 +58,7 @@ export default async function Admin() {
             </tr>
           ))}</tbody>
         </table>
-      </div>
+      </div> : <div className="admin-empty"><h2>No opportunities yet.</h2><p>Create a draft to start the guide.</p><Link className="button" href="/admin/listings/new">Create opportunity</Link></div>}
     </section>
   );
 }

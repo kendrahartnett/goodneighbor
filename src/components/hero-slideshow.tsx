@@ -5,9 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 const slides = [
-  { src: "/images/hero-garden-work.png", alt: "Illustration of volunteers tending a community garden with the Chicago skyline beyond." },
-  { src: "/images/hero-pantry.png", alt: "Illustration of volunteers arranging produce together in a neighborhood food pantry." },
-  { src: "/images/hero-garden-harvest.png", alt: "Illustration of a volunteer carrying freshly harvested vegetables in an urban garden." },
+  { src: "/images/hero-neighbors-garden-v2.webp", alt: "Illustrative photo of neighbors planting seedlings together in a community garden." },
+  { src: "/images/hero-neighbors-pantry-v2.webp", alt: "Illustrative photo of neighbors sorting fresh produce together at a food pantry." },
+  { src: "/images/hero-neighbors-cleanup-v2.webp", alt: "Illustrative photo of neighbors cleaning up a tree-lined city park together." },
 ];
 
 export function HeroSlideshow() {
@@ -31,7 +31,7 @@ export function HeroSlideshow() {
 
   return <section className="shell hero" aria-label="GoodNeighbor introduction">
     <div className="hero-fallback" aria-hidden="true" />
-    {slides.map((slide, index) => <Image key={slide.src} className={`hero-media ${index === active && !failedImages.includes(index) ? "is-active" : ""}`} src={slide.src} alt={index === active ? slide.alt : ""} aria-hidden={index !== active} fill sizes="(max-width: 1200px) 100vw, 1200px" priority={index === 0} onError={() => setFailedImages((failed) => failed.includes(index) ? failed : [...failed, index])} />)}
+    {slides.map((slide, index) => <Image key={slide.src} className={`hero-media ${index === active && !failedImages.includes(index) ? "is-active" : ""}`} src={slide.src} alt={index === active ? slide.alt : ""} aria-hidden={index !== active} fill sizes="(max-width: 1200px) 100vw, 1200px" preload={index === 0} onError={() => setFailedImages((failed) => failed.includes(index) ? failed : [...failed, index])} />)}
     <div className="hero-scrim" aria-hidden="true" />
     <div className="hero-inner"><div className="hero-copy">
       <p className="eyebrow">CHICAGO, ILLINOIS</p>

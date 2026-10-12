@@ -58,6 +58,13 @@ function checkOpportunity(
 export const opportunitySchema = opportunityFields.superRefine(checkOpportunity);
 export const opportunityPatchSchema = opportunityFields.partial();
 
+export const listingRequestSchema = z.object({
+  name: z.string().trim().min(2, "Enter your name.").max(120),
+  contactInformation: z.string().trim().min(5, "Enter a way to contact you.").max(240),
+  email: z.string().trim().email("Enter a valid email address.").max(254),
+  description: z.string().trim().min(20, "Add at least 20 characters of detail.").max(5000),
+});
+
 export function errors(error: z.ZodError) {
   return Object.fromEntries(error.issues.map((issue) => [issue.path.join("."), issue.message]));
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Opportunity } from "@prisma/client";
+import Image from "next/image";
 import { categories, categoryLabels } from "@/lib/categories";
 
 type FieldErrors = Record<string, string>;
@@ -22,6 +23,7 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
     addressText: item?.addressText ?? "", phoneNumber: item?.phoneNumber ?? "",
     volunteerPositions: item?.volunteerPositions ?? "",
     organizerUrl: item?.organizerUrl ?? "", sourceUrl: item?.sourceUrl ?? "",
+    imageUrl: item?.imageUrl ?? "", imageAlt: item?.imageAlt ?? "",
     verifiedAt: localDate(item?.verifiedAt) || localDate(new Date()), category: item?.category ?? "FOOD_SECURITY",
     dateType: item?.dateType ?? "ONGOING", status: item?.status ?? "DRAFT", startsAt: localDate(item?.startsAt), endsAt: localDate(item?.endsAt),
   };
@@ -29,7 +31,21 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
 
   async function save(form: HTMLFormElement) {
     setBusy(true); setMessage(""); setFieldErrors({});
-    const values: Record<string, string | null> = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const formData = new FormData(form);
+    const photo = formData.get("photo");
+    const removePhoto = formData.get("removePhoto") === "on";
+    formData.delete("photo"); formData.delete("removePhoto");
+    const values: Record<string, string | null> = Object.fromEntries(formData) as Record<string, string>;
+    values.imageUrl = removePhoto ? null : initial.imageUrl || null;
+    values.imageAlt = removePhoto ? null : String(values.imageAlt ?? "").trim() || null;
+    if (photo instanceof File && photo.size > 0) {
+      if (!values.imageAlt) { setFieldErrors({ imageAlt: "Describe the photo for screen readers." }); setMessage("Fix the highlighted fields."); setBusy(false); return; }
+      const upload = new FormData(); upload.set("photo", photo);
+      const uploaded = await fetch("/api/admin/photos", { method: "POST", body: upload }).catch(() => null);
+      const result = await uploaded?.json().catch(() => ({}));
+      if (!uploaded?.ok) { setMessage(result?.error?.message ?? "Unable to upload the photo."); setBusy(false); return; }
+      values.imageUrl = result.imageUrl;
+    }
     const startsAt = String(values.startsAt || ""); const endsAt = String(values.endsAt || "");
     for (const field of ["addressText", "phoneNumber", "volunteerPositions"] as const) {
       if (!String(values[field] ?? "").trim()) values[field] = null;
@@ -74,6 +90,9 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
       <label className="form-label">End date/time<input type="datetime-local" name="endsAt" defaultValue={initial.endsAt} /></label>{errorFor("endsAt")}
     </div></section>
     <section className="form-section"><h2>Links & verification</h2><p>Published listings must point to official organizer information and include a verification date.</p><div className="form-grid">
+      <label className="form-label full">Listing photo (optional)<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" /><small className="form-help">JPEG, PNG, or WebP; up to 3 MB. Upload only photos you may use.</small></label>
+      {item?.imageUrl && <div className="full current-photo"><p>Current photo</p><Image src={`/api/opportunities/${item.id}/photo`} alt={item.imageAlt ?? "Current listing photo"} width={220} height={150} unoptimized /><label><input type="checkbox" name="removePhoto" /> Remove current photo</label></div>}
+      <label className="form-label full">Photo description for screen readers<input name="imageAlt" maxLength={250} defaultValue={initial.imageAlt} placeholder="Describe what the photo shows" /></label>{errorFor("imageAlt")}
       <label className="form-label full">Organizer action URL <span className="required">Required</span><input required type="url" name="organizerUrl" defaultValue={initial.organizerUrl} /></label>{errorFor("organizerUrl")}
       <label className="form-label full">Official source URL <span className="required">Required</span><input required type="url" name="sourceUrl" defaultValue={initial.sourceUrl} /></label>{errorFor("sourceUrl")}
       <label className="form-label">Last verified <span className="required">Required</span><input required type="datetime-local" name="verifiedAt" defaultValue={initial.verifiedAt} /></label>{errorFor("verifiedAt")}

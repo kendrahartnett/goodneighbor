@@ -64,6 +64,8 @@ export async function PATCH(request: Request, { params }: Context) {
         ...(startsAt !== undefined ? { startsAt: startsAt ? new Date(startsAt) : null } : {}),
         ...(endsAt !== undefined ? { endsAt: endsAt ? new Date(endsAt) : null } : {}),
         ...(verifiedAt !== undefined ? { verifiedAt: new Date(verifiedAt) } : {}),
+        ...(fields.status === "PUBLISHED" && current.status !== "PUBLISHED" ? { publishedAt: new Date() } : {}),
+        ...(fields.status === "DRAFT" ? { publishedAt: null } : {}),
       },
     });
     return Response.json(item);

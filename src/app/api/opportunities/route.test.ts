@@ -23,6 +23,7 @@ describe("opportunities collection API", () => {
     expect(response.status).toBe(200);
     expect(findMany.mock.calls[0][0].where.status).toBe("PUBLISHED");
     expect(count.mock.calls[0][0].where.status).toBe("PUBLISHED");
+    expect(findMany.mock.calls[0][0].orderBy).toEqual([{ publishedAt: "desc" }, { id: "desc" }]);
   });
 
   it("includes volunteer positions in public keyword search", async () => {

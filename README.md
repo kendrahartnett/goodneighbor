@@ -7,8 +7,8 @@ GoodNeighbor is a Chicago volunteer-opportunity discovery app with public browsi
 - Audience: people who want an approachable way to find local volunteer opportunities.
 - Launch market: Chicago only.
 - Initial content: eight verified opportunity listings.
-- Public experience: editorial discovery, search/filtering, listing detail, and a clear path to the official organizer sign-up destination.
-- Admin experience: one protected dashboard for managing listings.
+- Public experience: editorial discovery, search/filtering, listing detail, a private suggestion form, and a clear path to the official organizer sign-up destination.
+- Admin experience: one protected dashboard for managing listings and viewing private suggestions.
 - Visual character: earthy, editorial, welcoming, contemporary, photo-forward, and subtly animated.
 
 ## Chosen stack
@@ -26,7 +26,7 @@ Next.js App Router, React, TypeScript, Tailwind CSS, Neon PostgreSQL, Prisma wit
 
 - Accounts or saved opportunities for general visitors.
 - Volunteer registration, scheduling, attendance tracking, messaging, or payments.
-- User-generated listings or multi-admin roles.
+- Self-published listings or multi-admin roles.
 - Markets outside Chicago.
 - A CMS or third-party listings ingestion pipeline.
 

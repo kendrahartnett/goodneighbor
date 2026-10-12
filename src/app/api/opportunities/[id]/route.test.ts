@@ -71,4 +71,14 @@ describe("opportunity item API", () => {
     expect((await response.json()).error.fields.startsAt).toBeTruthy();
     expect(update).not.toHaveBeenCalled();
   });
+
+  it("records the publication time when a draft becomes public", async () => {
+    requireAdmin.mockResolvedValue({ ok: true });
+    const before = Date.now();
+    const response = await PATCH(new Request("http://localhost/api/opportunities/existing", {
+      method: "PATCH", body: JSON.stringify({ status: "PUBLISHED" }),
+    }), context);
+    expect(response.status).toBe(200);
+    expect(update.mock.calls[0][0].data.publishedAt.getTime()).toBeGreaterThanOrEqual(before);
+  });
 });

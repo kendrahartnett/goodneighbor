@@ -72,3 +72,22 @@
 - Supplies a live deployment URL and explicitly signs off on browser testing while keeping release judgment separate from the latest requested changes.
 - Gives precise visual feedback on hero scale and page-heading hierarchy.
 - Expands the editorial content model intentionally while preserving the eight existing records for later official-source review.
+
+## Private listing suggestions and photo workflow — October 12, 2026
+
+> Implement these changes now and then we will continue with phase 5 checks: Read `AGENTS.md` and all project documentation before making changes. Preserve the existing stack, Chicago-only scope, single GitHub allowlisted admin, REST route-handler CRUD, security, and accessibility requirements. Keep the home hero headline exactly “A little good goes a long way.” on one line at desktop widths; make the UI more concise and professional, especially the admin dashboard and centered sign-in; add optional listing photo uploads with safe Vercel-compatible storage and deliberate no-photo layouts; show newest published listings first; create a public listing suggestion form with name, contact, email, details, optional photo, server validation, private database storage, and accessible success dialog; add an admin-only request inbox; rewrite About using the supplied “Building a Stronger Chicago, One Neighbor at a Time” and “Small Acts. Big Impact” copy with accessible supporting photos; update documentation, migrations, tests, build, and manual verification.
+
+### Builder capabilities demonstrated
+
+- Specifies exact responsive and accessibility behavior, including focus management and screen reader support.
+- Defines a scoped data and storage architecture with explicit admin privacy boundaries.
+- Connects editorial content, design quality, database migration safety, and release verification in one change request.
+
+## People-first volunteer photography — October 12, 2026
+
+> create and adjust and add photos more like these to the app instead. One of the last 2 images would be best for the landinpage hero image. Generate images like these and implement into the project.
+
+### Builder capabilities demonstrated
+
+- Art-directs the product through concrete references: real human connection, cooperative volunteer work, and a more authentic photographic feel.
+- Specifies where the strongest image belongs in the experience while leaving room for original, properly disclosed generated assets.

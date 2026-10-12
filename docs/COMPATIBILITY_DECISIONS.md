@@ -33,3 +33,11 @@
 ## Environment variables
 
 `DATABASE_URL`, `DIRECT_URL`, `AUTH_GITHUB_ID`, `AUTH_GITHUB_SECRET`, `AUTH_SECRET`, and either `ADMIN_GITHUB_ID` (preferred) or `ADMIN_GITHUB_LOGIN`.
+
+## October 12 request and photo integration
+
+- Keep the existing Next.js 16 App Router route handlers and Auth.js v5-style allowlist. Current official docs still support `auth.ts` exports and `AUTH_GITHUB_*`/`AUTH_SECRET`; every new private handler checks the allowlist independently.
+- Use `@vercel/blob` 2.8.1 with one **private** Blob store. Vercel's current private storage docs require SDK 2.3 or later. Server uploads capped at 3 MB fit below the documented 4.5 MB Vercel Function request limit. The SDK can use a connected store's OIDC credentials on Vercel or `BLOB_READ_WRITE_TOKEN` locally. Browser code receives neither credential. Database rows hold private Blob URLs; route handlers enforce published/admin visibility when streaming images.
+- Use the installed Next.js `Image` component for public photo sizing and local image route optimization; preserve no-photo text layouts. The Next.js 16 bundled docs deprecate `priority` in favor of `preload`, to address separately for the existing slideshow.
+- The migration adds `publishedAt` and `ListingRequest`; historical published rows use `createdAt` as the only available publication approximation. New publish transitions record the actual time. Server queries sort by `publishedAt DESC, id DESC`.
+- Official sources checked: https://vercel.com/docs/vercel-blob/private-storage , https://vercel.com/docs/vercel-blob/server-upload , https://nextjs.org/docs/app/api-reference/components/image , https://authjs.dev/reference/nextjs , and https://www.prisma.io/docs/orm/v6/prisma-client/deployment/serverless/deploy-to-vercel .

@@ -54,9 +54,23 @@ model Opportunity {
   sourceUrl String
   verifiedAt DateTime
   status OpportunityStatus @default(DRAFT)
+  publishedAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@index([status])
+  @@index([status, publishedAt, id])
   @@index([category])
   @@index([verifiedAt])
+}
+
+model ListingRequest {
+  id String @id @default(cuid())
+  name String
+  contactInformation String
+  email String
+  description String
+  photoUrl String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt, id])
 }
