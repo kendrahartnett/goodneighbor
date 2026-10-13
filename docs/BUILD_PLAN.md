@@ -48,6 +48,7 @@
 2. Run manual visual, keyboard, reduced-motion, auth, and content verification passes.
 3. Configure Vercel, production Neon, GitHub OAuth callbacks, and migration deployment workflow.
 4. Verify production deployment and re-check all organizer/source links.
+5. Verify private Blob storage for admin listing photos, the text-only public suggestion form and private inbox, newest-first publication ordering, and responsive editorial refinements.
 
 **Acceptance:** release gate is met; exactly eight verified Chicago listings are live; no application code behavior extends beyond v1 scope.
 

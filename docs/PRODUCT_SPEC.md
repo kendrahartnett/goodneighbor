@@ -21,7 +21,7 @@ GoodNeighbor helps Chicago residents discover trustworthy local volunteer opport
 
 ### Public pages
 
-- Home: branded hero with photo slideshow, concise value proposition, featured listings, discovery entry point, and trust statement.
+- Home: branded hero with photo slideshow, concise value proposition, featured listings, discovery entry point, trust statement, and a public listing suggestion form.
 - Opportunities index: all published Chicago listings, keyword search, and filters.
 - Opportunity detail: full listing information, verification context, and an external action link.
 - About/verification: a short explanation of curation and how users should confirm logistics with organizers.
@@ -29,16 +29,20 @@ GoodNeighbor helps Chicago residents discover trustworthy local volunteer opport
 ### Admin pages
 
 - Sign-in entry and protected dashboard.
-- Listing table/grid with status and last verification date.
+- Listing table/grid with status and last verification date, plus a private Listing Requests inbox.
 - Create, edit, publish/unpublish, and delete listing flows.
 
 ### Opportunity fields visible to visitors
 
-Title; organization; concise summary; longer description; Chicago neighborhood or service area; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; cover image; organizer action URL; verification date; and source/organizer attribution.
+Title; organization; concise summary; longer description; Chicago neighborhood or service area; optional address, phone, and volunteer positions when verified; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; organizer action URL; verification date; and source/organizer attribution. The new-opportunity form has no photo option; the edit form may manage an existing listing photo with meaningful alt text. Listings without a photo use a complete text-first layout.
 
 ## 5. Content model and listing states
 
 Every launch listing is `published` and `verified`. Drafts are admin-only. Unpublished listings are never included in public pages or public API responses. “Verified” means the administrator checked the organizer’s official source on the stored verification date; it does not mean GoodNeighbor guarantees event availability or quality.
+
+Public listings appear newest published first, with a stable ID tie-breaker. Home featured listings follow that order. A visitor suggestion is a private review request, never a public listing or a claim of verification. The form collects name, contact information, email, and details; it does not accept photos. Only the allowlisted admin can read requests. The success acknowledgement promises confirmation if a listing is published; email sending is an operational follow-up and is not automated in this version.
+
+The admin inbox separates active and archived requests. Archiving is reversible and does not create or publish a listing. Deleting a request is permanent and requires an explicit confirmation. Both actions are admin-only.
 
 ## 6. User journeys
 
@@ -54,7 +58,7 @@ Every launch listing is `published` and `verified`. Drafts are admin-only. Unpub
 1. Admin selects sign in and completes GitHub OAuth.
 2. App validates that the GitHub identity matches the configured allowlist.
 3. Admin creates or updates a listing, validates preview/content, and publishes it.
-4. Admin periodically refreshes the verification date and source.
+4. Admin reviews each published listing's official source at least every six months, updates the verification date only after a real check, and unpublishes listings that can no longer be substantiated. The monthly operational process is in [CONTENT_REVIEW.md](CONTENT_REVIEW.md).
 
 ## 7. Acceptance criteria
 
@@ -64,7 +68,8 @@ Every launch listing is `published` and `verified`. Drafts are admin-only. Unpub
 - Visitors cannot reach or mutate admin data.
 - The allowlisted GitHub admin can manage listings; any other authenticated GitHub user is rejected.
 - The app clearly remains Chicago-scoped and does not promise availability beyond organizer-supplied information.
+- Visitors can submit a private suggestion and receive an accessible acknowledgement; the admin can view requests newest first.
 
 ## 8. Deferred decisions
 
-Favorites, map search, neighborhood-distance sorting, multilingual content, newsletter capture, organizer submissions, and public user profiles are all deferred. Do not add any of them as incidental scope.
+Favorites, map search, neighborhood-distance sorting, multilingual content, newsletter capture, public user profiles, and public request tracking are deferred. Visitor suggestions are private requests, not self-published listings.

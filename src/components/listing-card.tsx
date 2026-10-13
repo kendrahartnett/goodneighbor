@@ -1,14 +1,12 @@
 import Link from "next/link";
 import type { Opportunity } from "@prisma/client";
-
-const categories: Record<string, string> = {
-  FOOD_SECURITY: "Food & hunger", ENVIRONMENT: "Environment",
-  YOUTH_COMMUNITY: "Youth & community", HOUSING_HEALTH: "Housing & health",
-};
+import { categoryLabels } from "@/lib/categories";
+import { ListingPhoto } from "@/components/listing-photo";
 
 export function ListingCard({ item }: { item: Opportunity }) {
   return <article className="card">
-    <span className="category-chip">{categories[item.category] ?? item.category.replaceAll("_", " ")}</span>
+    {item.imageUrl && item.imageAlt && <ListingPhoto id={item.id} url={item.imageUrl} alt={item.imageAlt} />}
+    <span className="category-chip">{categoryLabels[item.category]}</span>
     <h2><Link href={`/opportunities/${item.slug}`}>{item.title}</Link></h2>
     <p className="card-organization">{item.organizationName}</p>
     <p className="card-summary">{item.summary}</p>
