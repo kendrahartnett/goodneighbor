@@ -1,50 +1,230 @@
 # GoodNeighbor
 
-GoodNeighbor is a Chicago volunteer-opportunity discovery app with public browsing and a single-admin editorial dashboard. The application is implemented through Phase 4; Phase 5 release verification is in progress. See [Phase 5 status](docs/PHASE5_STATUS.md) and the [release checklist](docs/RELEASE_CHECKLIST.md) before deployment.
+**A calm, trustworthy way to discover verified volunteer opportunities across Chicago.**
 
-## Product snapshot
+[Live application](https://goodneighbor-psi.vercel.app/) · [Browse opportunities](https://goodneighbor-psi.vercel.app/opportunities) · [Product documentation](docs/PRODUCT_SPEC.md)
 
-- Audience: people who want an approachable way to find local volunteer opportunities.
-- Launch market: Chicago only.
-- Initial content: eight verified opportunity listings.
-- Public experience: editorial discovery, search/filtering, listing detail, a private suggestion form, and a clear path to the official organizer sign-up destination.
-- Admin experience: one protected dashboard for managing listings and viewing private suggestions.
-- Visual character: earthy, editorial, welcoming, contemporary, photo-forward, and subtly animated.
+![GoodNeighbor volunteers working together in a community garden](public/images/hero-neighbors-garden-v2.webp)
 
-## Chosen stack
+GoodNeighbor is a Chicago-only volunteer opportunity guide. Visitors can search and filter verified listings, understand what each role involves, and continue directly to an organizer's official website. A protected single-admin dashboard supports the editorial workflow without introducing public accounts, registrations, or a full CMS.
 
-Next.js App Router, React, TypeScript, Tailwind CSS, Neon PostgreSQL, Prisma with migrations, Auth.js using GitHub OAuth, custom fetch-based REST CRUD, and Vercel.
+## What GoodNeighbor does
 
-## Optional photo uploads
+### Public experience
 
-Only the admin listing create/edit forms accept photos. Visitor listing suggestions are text-only and do not need Blob. Admin photo uploads require a **private Vercel Blob store** connected to the GoodNeighbor Vercel project. For local admin photo testing, add the store's `BLOB_READ_WRITE_TOKEN` to ignored `.env.local`, or use the connected project's `BLOB_STORE_ID` and a current `VERCEL_OIDC_TOKEN`. Do not paste either credential into chat or commit it. Restart the local server after adding the variable. Vercel's OIDC token is short-lived; pull a fresh development token when needed, taking care not to overwrite the existing Neon database URLs in `.env.local`.
+- Presents a curated launch collection of eight verified Chicago opportunities.
+- Supports search and filtering by cause, neighborhood, and timing.
+- Provides accessible detail pages with Chicago-local date formatting.
+- Displays the official source and the date each listing was last verified.
+- Sends visitors to the organizer's external website to take action.
+- Accepts text-only opportunity suggestions for private admin review.
 
-## Start here
+### Admin experience
 
-1. Read [the build plan](docs/BUILD_PLAN.md) for sequencing.
-2. Treat [the product spec](docs/PRODUCT_SPEC.md), [technical spec](docs/TECHNICAL_SPEC.md), and [design spec](docs/DESIGN_SPEC.md) as the source of truth.
-3. Follow [AGENTS.md](AGENTS.md) before making implementation decisions.
-4. Use [the test plan](docs/TEST_PLAN.md) to define done.
+- Restricts access to one allowlisted GitHub identity through Auth.js.
+- Creates, edits, publishes, unpublishes, and deletes opportunities through REST endpoints.
+- Keeps drafts out of public pages and public API responses.
+- Manages active and archived visitor listing requests.
+- Surfaces six-month source-review cues for published listings.
+- Validates every write on the server and returns structured API errors.
 
-For local Phase 5 browser testing on Windows, run `npm run dev:test` from this project directory, then open `http://localhost:3000`. This launches against the already-migrated, isolated Neon `phase5-request-photo-check` branch without editing `.env.local` or production. Stop it with Ctrl+C before starting another server on port 3000. The test branch expires October 19, 2026; refresh the script's branch target after that date. Plain `npm run dev` instead uses `.env.local`, which currently targets production and is missing the Phase 5 migration.
+## Product principles
 
-## Explicit non-goals for v1
+- **Local by design:** v1 is intentionally limited to Chicago.
+- **Verified before published:** every public record includes an official source and verification date.
+- **Direct connection:** GoodNeighbor does not collect volunteer registrations; organizers own participation and logistics.
+- **Small administrative surface:** one allowlisted administrator manages editorial content.
+- **Accessible by default:** semantic structure, keyboard support, visible focus, reduced motion, and responsive layouts are treated as core behavior.
 
-- Accounts or saved opportunities for general visitors.
-- Volunteer registration, scheduling, attendance tracking, messaging, or payments.
-- Self-published listings or multi-admin roles.
-- Markets outside Chicago.
-- A CMS or third-party listings ingestion pipeline.
+## Technology
 
-## Verification required at implementation time
+| Layer | Implementation |
+|---|---|
+| Application | Next.js App Router, React, TypeScript |
+| Styling | Tailwind CSS and project design tokens |
+| Database | Neon PostgreSQL |
+| Data access | Prisma ORM with committed migrations and the Neon adapter |
+| Authentication | Auth.js with GitHub OAuth and a server-side admin allowlist |
+| API | Custom same-origin REST route handlers using `fetch` |
+| Validation | Zod |
+| Testing | Vitest, Testing Library, and manual browser/accessibility checks |
+| Hosting | Vercel |
 
-The exact current integration patterns and package compatibility for Next.js, Prisma, Auth.js, GitHub OAuth callbacks, and Vercel must be checked against their official documentation before implementation. The architectural intent in this package is stable; version-specific APIs are not assumed.
+Public listing pages are server-rendered. Client components are reserved for focused interactions such as search, filters, slideshow controls, dialogs, and admin forms.
 
+## Architecture at a glance
+
+```text
+Browser
+  ├─ Public Server Components ── Prisma ── Neon PostgreSQL
+  ├─ Interactive React UI ────── REST API ── Prisma ── Neon PostgreSQL
+  └─ Admin dashboard ─────────── Auth.js/GitHub OAuth
+                                   └─ server-side GitHub ID allowlist
+```
+
+The database is the live source of truth. Admin changes update Neon directly; they do not rewrite `prisma/seed.ts` or create Git commits.
+
+## Local development
+
+### Prerequisites
+
+- Node.js 20.9 or newer
+- npm
+- A Neon PostgreSQL project or isolated Neon branch
+- A GitHub OAuth application for local authentication
+
+### Installation
+
+```bash
+git clone <repository-url>
+cd goodneighbor
+npm install
+```
+
+Copy `.env.example` to `.env.local` and provide local credentials:
+
+```ini
+DATABASE_URL=postgresql://...-pooler.../neondb?sslmode=require
+DIRECT_URL=postgresql://.../neondb?sslmode=require
+AUTH_GITHUB_ID=
+AUTH_GITHUB_SECRET=
+AUTH_SECRET=
+ADMIN_GITHUB_ID=
+ADMIN_GITHUB_LOGIN=
+```
+
+- `DATABASE_URL` must use Neon's pooled endpoint for application traffic.
+- `DIRECT_URL` must use the direct endpoint for migrations.
+- `ADMIN_GITHUB_ID` is preferred; `ADMIN_GITHUB_LOGIN` is an optional fallback.
+- Keep `.env.local` private and out of version control.
+
+Set the local GitHub callback URL to:
+
+```text
+http://localhost:3000/api/auth/callback/github
+```
+
+Apply committed migrations, optionally seed a new isolated database, and start the app:
+
+```bash
+npm run db:deploy
+npm run db:seed
+npm run db:verify-seed
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+> Run `db:seed` only when intentionally populating a new or disposable branch. Do not automatically reseed production; admin edits make the production database the continuing source of truth.
+
+## Available commands
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start the Next.js development server using `.env.local` |
+| `npm run build` | Create an optimized production build |
+| `npm run start` | Run the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Check TypeScript without emitting files |
+| `npm test` | Run the automated test suite |
+| `npm run db:generate` | Regenerate Prisma Client |
+| `npm run db:migrate` | Create/apply migrations in development |
+| `npm run db:deploy` | Apply committed migrations to the configured database |
+| `npm run db:seed` | Populate the intentional target with the eight launch records |
+| `npm run db:verify-seed` | Verify the launch-record count and required source metadata |
+
+## Database workflow
+
+GoodNeighbor uses committed Prisma migrations rather than `prisma db push`.
+
+1. Create or modify schema changes on an isolated Neon branch.
+2. Generate and review the migration locally.
+3. Run lint, type checking, tests, build, and migration verification.
+4. Exercise public and admin flows against the isolated branch.
+5. Apply reviewed migrations deliberately to production with `npm run db:deploy` using the direct connection.
+
+Never point a preview deployment at production for migration testing. Runtime traffic should use the pooled URL; migration commands should use the direct URL.
+
+## Testing and verification
+
+Before release or handoff, run:
+
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npx prisma migrate status
+npm run db:verify-seed
+```
+
+The manual release gate also covers:
+
+- Anonymous discovery through the external organizer action.
+- Authenticated, unauthenticated, and non-allowlisted admin boundaries.
+- Complete draft, publish, edit, unpublish, and delete workflows.
+- Visitor suggestion and admin inbox workflows.
+- Keyboard navigation, focus visibility, reduced motion, and 200% zoom.
+- Desktop and narrow mobile layouts.
+- Current official-source verification for all launch listings.
+
+See [docs/TEST_PLAN.md](docs/TEST_PLAN.md) and [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) for the full gate.
+
+## Production deployment
+
+The application is deployed on Vercel at [goodneighbor-psi.vercel.app](https://goodneighbor-psi.vercel.app/).
+
+Configure these variables in the Vercel **Production** environment:
+
+```text
+DATABASE_URL
+DIRECT_URL
+AUTH_GITHUB_ID
+AUTH_GITHUB_SECRET
+AUTH_SECRET
+ADMIN_GITHUB_ID
+ADMIN_GITHUB_LOGIN   # optional fallback
+```
+
+The production GitHub callback is:
+
+```text
+https://goodneighbor-psi.vercel.app/api/auth/callback/github
+```
+
+Vercel must connect to the intended Neon production branch—not a separately provisioned Prisma Postgres database. Environment-variable changes require a new deployment before they affect the live application.
+
+## Content stewardship
+
+Verification is an ongoing editorial responsibility. The allowlisted administrator reviews the dashboard monthly and reverifies every published listing at least once every six months. A listing is unpublished when its official source is broken, its availability has ended, or its details cannot be substantiated.
+
+The interface's verification date records the last genuine source check; it is never advanced merely to clear a reminder. See [docs/CONTENT_REVIEW.md](docs/CONTENT_REVIEW.md) for the operating procedure.
+
+## v1 boundaries
+
+GoodNeighbor intentionally does not include:
+
+- Public user accounts or saved opportunities.
+- Volunteer registration, scheduling, messaging, attendance, or payments.
+- Self-publishing or multi-admin role management.
+- Maps or geographic expansion beyond Chicago.
+- A CMS or automated third-party listing ingestion.
+- Claims of organizer partnership without substantiation.
+
+## Project documentation
+
+- [Product specification](docs/PRODUCT_SPEC.md)
+- [Technical specification](docs/TECHNICAL_SPEC.md)
+- [Design specification](docs/DESIGN_SPEC.md)
+- [Build plan](docs/BUILD_PLAN.md)
+- [Test plan](docs/TEST_PLAN.md)
+- [Release checklist](docs/RELEASE_CHECKLIST.md)
+- [Compatibility decisions](docs/COMPATIBILITY_DECISIONS.md)
+- [Content review procedure](docs/CONTENT_REVIEW.md)
+- [Prompt log](prompt-log.md)
 
 ## Author
 
-Kendra Anne Hartnett
+Designed and built by **Kendra Anne Hartnett** — [@kendrahartnett](https://github.com/kendrahartnett)
 
-Github: [@kendrahartnett](https://github.com/kendrahartnett)
-
-Build with: Codex CLI
+Built in collaboration with Codex.
