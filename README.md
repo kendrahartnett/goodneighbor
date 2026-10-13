@@ -4,7 +4,7 @@
 
 [Live application](https://goodneighbor-psi.vercel.app/) · [Browse opportunities](https://goodneighbor-psi.vercel.app/opportunities) · [Product documentation](docs/PRODUCT_SPEC.md)
 
-![GoodNeighbor volunteers working together in a community garden](public/images/hero-neighbors-garden-v2.webp)
+![GoodNeighbor homepage featuring the Chicago volunteer opportunity experience](img/gnHome.png)
 
 GoodNeighbor is a Chicago-only volunteer opportunity guide. Visitors can search and filter verified listings, understand what each role involves, and continue directly to an organizer's official website. A protected single-admin dashboard supports the editorial workflow without introducing public accounts, registrations, or a full CMS.
 
