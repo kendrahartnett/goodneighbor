@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:test": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve-test-branch.ps1 -Branch phase5-request-photo-check -ExpectedHost ep-weathered-violet-b5enylde.c-7.us-east-2.aws.neon.tech -Mode dev",
     "build": "next build",
     "postinstall": "prisma generate",
     "start": "next start",

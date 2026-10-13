@@ -1,4 +1,4 @@
-import { get, put } from "@vercel/blob";
+import { del, get, put } from "@vercel/blob";
 
 const MAX_PHOTO_BYTES = 3 * 1024 * 1024;
 const extensions: Record<string, string> = {
@@ -16,6 +16,10 @@ export function isPrivateBlobUrl(value: string) {
   }
 }
 
+export function isPhotoStorageConfigured() {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || (process.env.BLOB_STORE_ID && (process.env.VERCEL_OIDC_TOKEN || process.env.VERCEL === "1")));
+}
+
 export async function validatePhoto(file: File): Promise<string | null> {
   if (!extensions[file.type]) return "Use a JPEG, PNG, or WebP photo.";
   if (!file.size || file.size > MAX_PHOTO_BYTES) return "The photo must be smaller than 3 MB.";
@@ -28,7 +32,7 @@ export async function validatePhoto(file: File): Promise<string | null> {
 }
 
 export async function uploadPhoto(file: File, area: "listings" | "requests") {
-  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) throw new Error("Blob storage is not configured");
+  if (!isPhotoStorageConfigured()) throw new Error("Blob storage is not configured");
   const pathname = `${area}/${crypto.randomUUID()}.${extensions[file.type]}`;
   const blob = await put(pathname, file, { access: "private", contentType: file.type });
   return blob.url;
@@ -37,4 +41,10 @@ export async function uploadPhoto(file: File, area: "listings" | "requests") {
 export async function readPhoto(url: string) {
   if (!isPrivateBlobUrl(url)) return null;
   return get(url, { access: "private" });
+}
+
+export async function deletePrivatePhoto(url: string) {
+  if (!isPrivateBlobUrl(url)) return;
+  if (!isPhotoStorageConfigured()) throw new Error("Blob storage is not configured");
+  await del(url);
 }

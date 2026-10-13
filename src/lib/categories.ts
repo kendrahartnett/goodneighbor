@@ -14,6 +14,6 @@ export const categoryLabels: Record<(typeof categories)[number], string> = {
   YOUTH_COMMUNITY: "Youth & community",
   HOUSING_HEALTH: "Housing & health",
   ANIMAL_WELFARE: "Animal welfare",
-  SKILLS_BASED_VIRTUAL: "Skills-based & virtual volunteering",
+  SKILLS_BASED_VIRTUAL: "Skills-based",
   PUBLIC_SAFETY: "Public safety",
 };

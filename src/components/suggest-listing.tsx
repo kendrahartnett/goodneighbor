@@ -45,7 +45,6 @@ export function SuggestListing() {
         <label className="form-label">Contact information <span className="required">Required</span><input name="contactInformation" required maxLength={240} placeholder="Phone or preferred contact method" aria-invalid={!!fieldErrors.contactInformation} /></label>{errorFor("contactInformation")}
         <label className="form-label full">Email address <span className="required">Required</span><input name="email" type="email" autoComplete="email" required maxLength={254} aria-invalid={!!fieldErrors.email} /></label>{errorFor("email")}
         <label className="form-label full">Opportunity details <span className="required">Required</span><textarea name="description" required minLength={20} maxLength={5000} rows={7} placeholder="Share the organization, location, volunteer work, and official link if you have one." aria-invalid={!!fieldErrors.description} /></label>{errorFor("description")}
-        <label className="form-label full">Photo (optional)<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" aria-invalid={!!fieldErrors.photo} /><small className="form-help">JPEG, PNG, or WebP; up to 3 MB. Share only a photo you may submit.</small></label>{errorFor("photo")}
       </div>
       {message && <p className="field-error" role="alert">{message}</p>}
       <button ref={triggerRef} className="button" type="submit" disabled={busy}>{busy ? "Sending…" : "Send suggestion"}</button>

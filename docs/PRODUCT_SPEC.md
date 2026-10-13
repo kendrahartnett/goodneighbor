@@ -34,13 +34,15 @@ GoodNeighbor helps Chicago residents discover trustworthy local volunteer opport
 
 ### Opportunity fields visible to visitors
 
-Title; organization; concise summary; longer description; Chicago neighborhood or service area; optional address, phone, and volunteer positions when verified; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; optional uploaded photo with meaningful alt text; organizer action URL; verification date; and source/organizer attribution. Listings without a photo use a complete text-first layout.
+Title; organization; concise summary; longer description; Chicago neighborhood or service area; optional address, phone, and volunteer positions when verified; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; organizer action URL; verification date; and source/organizer attribution. The new-opportunity form has no photo option; the edit form may manage an existing listing photo with meaningful alt text. Listings without a photo use a complete text-first layout.
 
 ## 5. Content model and listing states
 
 Every launch listing is `published` and `verified`. Drafts are admin-only. Unpublished listings are never included in public pages or public API responses. “Verified” means the administrator checked the organizer’s official source on the stored verification date; it does not mean GoodNeighbor guarantees event availability or quality.
 
-Public listings appear newest published first, with a stable ID tie-breaker. Home featured listings follow that order. A visitor suggestion is a private review request, never a public listing or a claim of verification. The form collects name, contact information, email, details, and an optional photo. Only the allowlisted admin can read requests. The success acknowledgement promises confirmation if a listing is published; email sending is an operational follow-up and is not automated in this version.
+Public listings appear newest published first, with a stable ID tie-breaker. Home featured listings follow that order. A visitor suggestion is a private review request, never a public listing or a claim of verification. The form collects name, contact information, email, and details; it does not accept photos. Only the allowlisted admin can read requests. The success acknowledgement promises confirmation if a listing is published; email sending is an operational follow-up and is not automated in this version.
+
+The admin inbox separates active and archived requests. Archiving is reversible and does not create or publish a listing. Deleting a request is permanent and requires an explicit confirmation. Both actions are admin-only.
 
 ## 6. User journeys
 
@@ -56,7 +58,7 @@ Public listings appear newest published first, with a stable ID tie-breaker. Hom
 1. Admin selects sign in and completes GitHub OAuth.
 2. App validates that the GitHub identity matches the configured allowlist.
 3. Admin creates or updates a listing, validates preview/content, and publishes it.
-4. Admin periodically refreshes the verification date and source.
+4. Admin reviews each published listing's official source at least every six months, updates the verification date only after a real check, and unpublishes listings that can no longer be substantiated. The monthly operational process is in [CONTENT_REVIEW.md](CONTENT_REVIEW.md).
 
 ## 7. Acceptance criteria
 

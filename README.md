@@ -15,12 +15,18 @@ GoodNeighbor is a Chicago volunteer-opportunity discovery app with public browsi
 
 Next.js App Router, React, TypeScript, Tailwind CSS, Neon PostgreSQL, Prisma with migrations, Auth.js using GitHub OAuth, custom fetch-based REST CRUD, and Vercel.
 
+## Optional photo uploads
+
+Only the admin listing create/edit forms accept photos. Visitor listing suggestions are text-only and do not need Blob. Admin photo uploads require a **private Vercel Blob store** connected to the GoodNeighbor Vercel project. For local admin photo testing, add the store's `BLOB_READ_WRITE_TOKEN` to ignored `.env.local`, or use the connected project's `BLOB_STORE_ID` and a current `VERCEL_OIDC_TOKEN`. Do not paste either credential into chat or commit it. Restart the local server after adding the variable. Vercel's OIDC token is short-lived; pull a fresh development token when needed, taking care not to overwrite the existing Neon database URLs in `.env.local`.
+
 ## Start here
 
 1. Read [the build plan](docs/BUILD_PLAN.md) for sequencing.
 2. Treat [the product spec](docs/PRODUCT_SPEC.md), [technical spec](docs/TECHNICAL_SPEC.md), and [design spec](docs/DESIGN_SPEC.md) as the source of truth.
 3. Follow [AGENTS.md](AGENTS.md) before making implementation decisions.
 4. Use [the test plan](docs/TEST_PLAN.md) to define done.
+
+For local Phase 5 browser testing on Windows, run `npm run dev:test` from this project directory, then open `http://localhost:3000`. This launches against the already-migrated, isolated Neon `phase5-request-photo-check` branch without editing `.env.local` or production. Stop it with Ctrl+C before starting another server on port 3000. The test branch expires October 19, 2026; refresh the script's branch target after that date. Plain `npm run dev` instead uses `.env.local`, which currently targets production and is missing the Phase 5 migration.
 
 ## Explicit non-goals for v1
 

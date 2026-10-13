@@ -275,6 +275,12 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .admin-header h1, .admin-form-page h1 { font-size: clamp(2.2rem, 3.7vw, 3.1rem); }
 .admin-header .muted { margin: 8px 0 0; font-size: .94rem; }
 .dashboard-stats { gap: 12px; margin-bottom: 24px; }
+.review-notice { margin-bottom: 28px; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--sage-pale); }
+.review-notice strong { color: var(--forest); }
+.review-notice p { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+.review-state { display: inline-block; margin-top: 3px; color: var(--muted); font-size: .78rem; font-weight: 800; }
+.review-state[data-state="due-soon"] { color: #714527; }
+.review-state[data-state="overdue"] { color: var(--danger); }
 .stat-card { padding: 17px 20px; }
 .stat-card strong { font-size: 2.15rem; }
 .stat-card span { font-size: .85rem; }
@@ -315,6 +321,15 @@ input[type="checkbox"] { width: auto; min-height: auto; }
 .request-detail-copy, .request-contact { padding: 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
 .request-detail-copy h2, .request-contact h2 { font-size: 1.5rem; }
 .request-detail-copy p { white-space: pre-wrap; }
+.request-views { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 20px; }
+.request-views a { padding: 8px 15px; border: 1px solid var(--border); border-radius: 999px; color: var(--forest); font-size: .9rem; font-weight: 800; text-decoration: none; }
+.request-views a[aria-current="page"] { border-color: var(--forest); background: var(--forest); color: var(--cream); }
+.request-row-actions { display: grid; justify-items: start; gap: 10px; }
+.request-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.request-actions .button-quiet, .request-actions .delete-button { min-height: 40px; padding: 7px 12px; font-size: .82rem; }
+.request-actions .field-error { width: 100%; }
+.request-review-action { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+.request-review-action p { margin: 0; font-size: .9rem; }
 .request-contact dt { margin-top: 14px; color: var(--muted); font-size: .76rem; font-weight: 800; text-transform: uppercase; }
 .request-contact dd { margin: 2px 0 0; overflow-wrap: anywhere; }
 .request-photo { margin-top: 26px; }
@@ -325,7 +340,7 @@ input[type="checkbox"] { width: auto; min-height: auto; }
 .suggest-intro p:last-child { max-width: 430px; color: var(--muted); }
 .suggest-form { display: grid; gap: 18px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--border); border-radius: 18px; background: var(--surface); }
 .suggest-form > .button { justify-self: start; }
-.success-dialog { width: min(460px, calc(100% - 32px)); padding: 30px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--ink); box-shadow: 0 22px 70px rgb(0 0 0 / 22%); }
+.success-dialog { position: fixed; inset: 0; width: min(460px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 30px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--ink); box-shadow: 0 22px 70px rgb(0 0 0 / 22%); overflow-y: auto; }
 .success-dialog::backdrop { background: rgb(16 39 29 / 62%); }
 .success-dialog h2 { margin: 14px 0 10px; font-size: 2rem; }
 .success-dialog p { color: var(--muted); }
@@ -370,4 +385,10 @@ input[type="checkbox"] { width: auto; min-height: auto; }
   .about-lead > p:last-child { font-size: 1.03rem; }
   .about-impact { padding: 20px; }
   .about-impact figure { height: 220px; }
+  .admin-table tr { grid-template-columns: minmax(0, 1fr); }
+  .admin-table td, .request-contact dd, .request-detail-copy { min-width: 0; overflow-wrap: anywhere; }
+  .admin-table td:first-child { grid-column: auto; }
+  .admin-table td:last-child { text-align: left; }
+  .admin-table td[data-label]:not(:first-child):not(:last-child)::before { display: block; color: var(--muted); content: attr(data-label); font-size: .76rem; font-weight: 700; text-transform: uppercase; }
+  .admin-table td[data-label="Verified"]::before { content: "Verified"; }
 }

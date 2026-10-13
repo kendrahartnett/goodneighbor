@@ -19,10 +19,11 @@ Use a layered approach: unit tests for pure validation/formatting, route/API int
 | UX | Clear loading, error, empty, and success feedback; controls work on narrow screens |
 | Accessibility | Keyboard pass, focus visibility, labels/errors, contrast, screen-reader names, reduced-motion slideshow/loader |
 | Deployment | Production build succeeds; environment variables configured; OAuth production callback verified; migration strategy exercised safely |
-| Photos | Optional admin upload accepts valid JPEG/PNG/WebP under 3 MB, rejects invalid type/content/size and unauthorized uploads; photo and no-photo cards/details render without broken boxes |
-| Requests | Public submission validates fields/photo, persists privately, shows keyboard accessible modal; anonymous inbox/photo reads are denied; admin inbox/detail newest first |
+| Photos | New-opportunity form has no photo control; edit form may manage photos. Admin upload accepts valid JPEG/PNG/WebP under 3 MB and rejects invalid type/content/size and unauthorized uploads; photo and no-photo cards/details render without broken boxes |
+| Requests | Text-only public submission validates fields and rejects photo attachments, persists privately, shows keyboard accessible modal; anonymous inbox/historical photo reads and mutations are denied; admin active/archived views, restore, confirmed delete, and newest-first order work |
 | Publication order | Home, index, and public API sort by `publishedAt DESC, id DESC`; status transitions update timestamp; no client re-sort |
 | Responsive layout | Desktop hero headline stays on one line without overflow; mobile wraps naturally; admin sign-in stays centered; focus, zoom, and reduced motion remain usable |
+| Content review | Admin dashboard calculates six-month review dates in Chicago calendar time, shows due-soon/overdue cues, and supports the monthly editorial review process without changing public verification claims automatically |
 
 ## Core end-to-end scenarios
 
@@ -37,6 +38,7 @@ Use a layered approach: unit tests for pure validation/formatting, route/API int
 
 - Current Chromium, Firefox, and Safari where available.
 - Mobile narrow viewport, tablet, and desktop; 200% browser zoom.
+- Check admin request cards with long email/contact/description text for horizontal overflow at narrow widths.
 - Slow network and image-load failure states.
 - Light/default visual experience; no dark-mode requirement unless deliberately designed and tested.
 - Inspect external target URLs and visual labeling before launch.

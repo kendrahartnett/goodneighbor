@@ -13,6 +13,7 @@ describe("listing suggestion confirmation", () => {
   it("opens a named modal after the request is received and returns focus on close", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ id: "request-1" }) }));
     render(<SuggestListing />);
+    expect(screen.queryByLabelText(/photo/i)).toBeNull();
     fireEvent.submit(screen.getByRole("button", { name: "Send suggestion" }).closest("form")!);
     const dialog = await screen.findByRole("dialog");
     expect(dialog.getAttribute("aria-labelledby")).toBe("request-success-title");

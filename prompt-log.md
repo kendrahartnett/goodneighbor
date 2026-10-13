@@ -91,3 +91,66 @@
 
 - Art-directs the product through concrete references: real human connection, cooperative volunteer work, and a more authentic photographic feel.
 - Specifies where the strongest image belongs in the experience while leaving room for original, properly disclosed generated assets.
+
+## Phase 5 database compatibility catch — October 12, 2026
+
+> error: Runtime PrismaClientKnownRequestError ... The column `(not available)` does not exist in the current database. `src/app/page.tsx` queries `publishedAt`.
+
+### Builder capabilities demonstrated
+
+- Tests the real local app after a schema change and reports the exact failing query, enabling a targeted migration check.
+- Keeps production database changes separate from isolated-branch verification.
+
+## Photo-upload troubleshooting — October 12, 2026
+
+> When I try to upload a photo i get this error: Photo (optional) JPEG, PNG, or WebP; up to 3 MB. Share only a photo you may submit. We could not receive your request. Please try again later.
+
+### Builder capabilities demonstrated
+
+- Tests the optional media path separately from text-only submission and reports the precise visible error.
+- Drives a clearer failure state and an explicit storage-configuration check before release.
+
+## Text-only public suggestions — October 12, 2026
+
+> Let's just removed the photo upload option there in the user form
+
+### Builder capabilities demonstrated
+
+- Simplifies the visitor experience after testing revealed an unnecessary dependency on upload storage.
+- Keeps the admin listing-photo workflow separate from public suggestions.
+
+## Repeatable localhost browser testing — October 12, 2026
+
+> I want to be able to run my browser testing on localhost:3000. I still cannot. What is happening and what needs to be fixed
+
+### Builder capabilities demonstrated
+
+- Identifies a release-testing workflow gap rather than treating a successful build as enough.
+- Requires a repeatable local command that preserves production data and makes browser verification possible.
+
+## Targeted discovery and review refinements — October 12, 2026
+
+> Make these changes: 1. Change this opportunity filter: "Skills-based & virtual volunteering" to just say "Skills-based" 2. center the form submission received popup model after user submits form 3. add a button in the listing requests in admin to the listing view click that says, "verified and approved". It doesnt have to work but I want it to be there
+
+### Builder capabilities demonstrated
+
+- Refines public-facing terminology and submission feedback through hands-on testing.
+- Shapes the editorial review interface while separating a visual placeholder from a working approval action.
+
+## Ongoing trust and small-screen quality — October 12, 2026
+
+> We need a way to establish an operational review cadence of the verified data after launch, like to reverify every 6 months. ** Also check the web for responsiveness on small screens and fix
+
+### Builder capabilities demonstrated
+
+- Treats data trust as an ongoing operational responsibility, with an explicit owner and repeatable six-month review rule.
+- Tests the actual browser experience at narrow widths and turns observed overflow into a focused responsive fix.
+
+## Inbox lifecycle and simpler listing creation — October 13, 2026
+
+> Add an archive button and a delete option for the Listing Requests in /admin inbox. Completely Remove the photo option from the /admin "new opportunity" form.
+
+### Builder capabilities demonstrated
+
+- Defines a reversible editorial archive separately from irreversible, confirmed deletion.
+- Simplifies the first-time listing workflow while preserving existing-listing photo management.
