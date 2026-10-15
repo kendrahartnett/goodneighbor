@@ -19,7 +19,7 @@ Use a layered approach: unit tests for pure validation/formatting, route/API int
 | UX | Clear loading, error, empty, and success feedback; controls work on narrow screens |
 | Accessibility | Keyboard pass, focus visibility, labels/errors, contrast, screen-reader names, reduced-motion slideshow/loader |
 | Deployment | Production build succeeds; environment variables configured; OAuth production callback verified; migration strategy exercised safely |
-| Photos | New-opportunity form has no photo control; edit form may manage photos. Admin upload accepts valid JPEG/PNG/WebP under 3 MB and rejects invalid type/content/size and unauthorized uploads; photo and no-photo cards/details render without broken boxes |
+| Photos | Admin create and edit forms show optional photo and alt-text controls. Without Blob configuration, saving without a photo works and selecting one shows a setup error. Once connected, admin upload accepts valid JPEG/PNG/WebP under 3 MB and rejects invalid type/content/size and unauthorized uploads; photo and no-photo cards/details render without broken boxes |
 | Requests | Text-only public submission validates fields and rejects photo attachments, persists privately, shows keyboard accessible modal; anonymous inbox/historical photo reads and mutations are denied; admin active/archived views, restore, confirmed delete, and newest-first order work |
 | Publication order | Home, index, and public API sort by `publishedAt DESC, id DESC`; status transitions update timestamp; no client re-sort |
 | Responsive layout | Desktop hero headline stays on one line without overflow; mobile wraps naturally; admin sign-in stays centered; focus, zoom, and reduced motion remain usable |

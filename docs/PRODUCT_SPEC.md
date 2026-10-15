@@ -34,7 +34,7 @@ GoodNeighbor helps Chicago residents discover trustworthy local volunteer opport
 
 ### Opportunity fields visible to visitors
 
-Title; organization; concise summary; longer description; Chicago neighborhood or service area; optional address, phone, and volunteer positions when verified; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; organizer action URL; verification date; and source/organizer attribution. The new-opportunity form has no photo option; the edit form may manage an existing listing photo with meaningful alt text. Listings without a photo use a complete text-first layout.
+Title; organization; concise summary; longer description; Chicago neighborhood or service area; optional address, phone, and volunteer positions when verified; category; optional date/time or ongoing status; commitment note; accessibility/eligibility note when supplied; organizer action URL; verification date; and source/organizer attribution. The admin create and edit forms may upload a listing photo with meaningful alt text once private Blob storage is connected. Listings without a photo use a complete text-first layout.
 
 ## 5. Content model and listing states
 

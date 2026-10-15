@@ -40,10 +40,12 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
     values.imageAlt = removePhoto ? null : String(values.imageAlt ?? "").trim() || null;
     if (photo instanceof File && photo.size > 0) {
       if (!values.imageAlt) { setFieldErrors({ imageAlt: "Describe the photo for screen readers." }); setMessage("Fix the highlighted fields."); setBusy(false); return; }
+      if (photo.size > 3 * 1024 * 1024) { setMessage("Choose a photo smaller than 3 MB."); setBusy(false); return; }
+      if (!["image/jpeg", "image/png", "image/webp"].includes(photo.type)) { setMessage("Choose a JPEG, PNG, or WebP photo."); setBusy(false); return; }
       const upload = new FormData(); upload.set("photo", photo);
       const uploaded = await fetch("/api/admin/photos", { method: "POST", body: upload }).catch(() => null);
       const result = await uploaded?.json().catch(() => ({}));
-      if (!uploaded?.ok) { setMessage(result?.error?.message ?? "Unable to upload the photo."); setBusy(false); return; }
+      if (!uploaded?.ok) { setMessage(result?.error?.message ?? (uploaded ? `Photo upload failed (${uploaded.status}). Please try again.` : "Could not reach the photo upload service. Check your connection and try again.")); setBusy(false); return; }
       values.imageUrl = result.imageUrl;
     }
     const startsAt = String(values.startsAt || ""); const endsAt = String(values.endsAt || "");
@@ -90,9 +92,9 @@ export function AdminListingForm({ item }: { item?: Opportunity }) {
       <label className="form-label">End date/time<input type="datetime-local" name="endsAt" defaultValue={initial.endsAt} /></label>{errorFor("endsAt")}
     </div></section>
     <section className="form-section"><h2>Links & verification</h2><p>Published listings must point to official organizer information and include a verification date.</p><div className="form-grid">
-      {item && <label className="form-label full">Listing photo (optional)<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" /><small className="form-help">JPEG, PNG, or WebP; up to 3 MB. Upload only photos you may use.</small></label>}
+      <label className="form-label full">Listing photo (optional)<input type="file" name="photo" accept="image/jpeg,image/png,image/webp" /><small className="form-help">JPEG, PNG, or WebP; up to 3 MB. Upload only photos you may use. Photo uploads require a connected Vercel Blob store; you can save without a photo for now.</small></label>
       {item?.imageUrl && <div className="full current-photo"><p>Current photo</p><Image src={`/api/opportunities/${item.id}/photo`} alt={item.imageAlt ?? "Current listing photo"} width={220} height={150} unoptimized /><label><input type="checkbox" name="removePhoto" /> Remove current photo</label></div>}
-      {item && <label className="form-label full">Photo description for screen readers<input name="imageAlt" maxLength={250} defaultValue={initial.imageAlt} placeholder="Describe what the photo shows" /></label>}{item && errorFor("imageAlt")}
+      <label className="form-label full">Photo description for screen readers<input name="imageAlt" maxLength={250} defaultValue={initial.imageAlt} placeholder="Describe what the photo shows" /></label>{errorFor("imageAlt")}
       <label className="form-label full">Organizer action URL <span className="required">Required</span><input required type="url" name="organizerUrl" defaultValue={initial.organizerUrl} /></label>{errorFor("organizerUrl")}
       <label className="form-label full">Official source URL <span className="required">Required</span><input required type="url" name="sourceUrl" defaultValue={initial.sourceUrl} /></label>{errorFor("sourceUrl")}
       <label className="form-label">Last verified <span className="required">Required</span><input required type="datetime-local" name="verifiedAt" defaultValue={initial.verifiedAt} /></label>{errorFor("verifiedAt")}

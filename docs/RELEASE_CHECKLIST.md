@@ -38,7 +38,7 @@ Production URL supplied by the owner: [goodneighbor-psi.vercel.app](https://good
 5. Intentionally seed the production database once, only after reviewing the eight current official source links and the target branch. Do not seed through an automatic deployment hook; subsequent admin edits must not be overwritten by a repeat seed.
 6. Deploy a Vercel preview using its isolated database and exercise the manual gate. Then deploy to Production and repeat the anonymous, admin OAuth, external-link, and database-count checks on the live hostname.
 7. Apply the new committed migration to the intended production direct URL before deploying code that queries `ListingRequest` or `publishedAt`. Configure Blob storage before enabling photo upload in Production.
-8. Apply `20261013000000_listing_request_archive` to the intended production direct URL before deploying inbox archive code. Check Active/Archived, Restore, confirmed Delete, and the new-opportunity form without a photo field on Preview first.
+8. Apply `20261013000000_listing_request_archive` to the intended production direct URL before deploying inbox archive code. Check Active/Archived, Restore, confirmed Delete, and the new-opportunity form with its optional photo field on Preview first. A photo upload requires the private Blob connection; saving without a photo does not.
 
 ## Current open release blockers
 

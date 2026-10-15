@@ -64,6 +64,14 @@ Browser
 
 The database is the live source of truth. Admin changes update Neon directly; they do not rewrite `prisma/seed.ts` or create Git commits.
 
+## Opportunity photos
+
+The admin can add a photo while **creating or editing an opportunity**. Both forms accept JPEG, PNG, or WebP images under 3 MB and require a description for screen readers when a photo is selected. Published listing cards and detail pages then display the photo. Until Blob is connected, leave the optional photo field empty and save the listing normally.
+
+Photos are uploaded to a **private Vercel Blob store**; Neon stores only the URL in `Opportunity.imageUrl` and the description in `Opportunity.imageAlt`. No database migration is needed to enable photo uploads.
+
+To enable uploads on Vercel, create a **Private** Blob store from the GoodNeighbor project's **Storage** page and connect it to the **Production** environment. The connection supplies either `BLOB_READ_WRITE_TOKEN` or Vercel's OIDC store configuration. Redeploy after connecting the store so the running app receives the new configuration. For localhost testing, add the store's `BLOB_READ_WRITE_TOKEN` to the ignored `.env.local` and restart the dev server. Never put that token in browser code or commit it. See [Vercel's private Blob setup](https://vercel.com/docs/vercel-blob/private-storage).
+
 ## Local development
 
 ### Prerequisites

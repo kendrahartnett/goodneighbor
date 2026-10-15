@@ -42,3 +42,7 @@
 - Use the installed Next.js `Image` component for public photo sizing and local image route optimization; preserve no-photo text layouts. The Next.js 16 bundled docs deprecate `priority` in favor of `preload`, to address separately for the existing slideshow.
 - The migration adds `publishedAt` and `ListingRequest`; historical published rows use `createdAt` as the only available publication approximation. New publish transitions record the actual time. Server queries sort by `publishedAt DESC, id DESC`.
 - Official sources checked: https://vercel.com/docs/vercel-blob/private-storage , https://vercel.com/docs/vercel-blob/server-upload , https://nextjs.org/docs/app/api-reference/components/image , https://authjs.dev/reference/nextjs , and https://www.prisma.io/docs/orm/v6/prisma-client/deployment/serverless/deploy-to-vercel .
+
+## October 15 admin photo control
+
+- The owner requested the optional photo upload control be restored to the admin new-opportunity form before connecting Vercel Blob. This supersedes the earlier create-form omission. The public visitor suggestion form remains text-only. A listing may still be saved without a photo; a selected photo requires the private Blob store and meaningful alt text. No schema change is needed.
