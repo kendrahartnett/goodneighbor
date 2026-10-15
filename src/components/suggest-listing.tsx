@@ -41,6 +41,10 @@ export function SuggestListing() {
     <div className="suggest-intro"><p className="eyebrow">KNOW A WAY TO HELP?</p><h2 id="suggest-title">Suggest a Chicago opportunity.</h2><p>Tell us about a local volunteer opportunity. We review suggestions against an official organizer source before anything appears in the guide.</p></div>
     <form ref={formRef} className="suggest-form" onSubmit={submit}>
       <div className="form-grid">
+        <div className="honeypot-field" aria-hidden="true">
+          <label htmlFor="suggest-website">Website</label>
+          <input id="suggest-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        </div>
         <label className="form-label">Name <span className="required">Required</span><input name="name" autoComplete="name" required maxLength={120} aria-invalid={!!fieldErrors.name} /></label>{errorFor("name")}
         <label className="form-label">Contact information <span className="required">Required</span><input name="contactInformation" required maxLength={240} placeholder="Phone or preferred contact method" aria-invalid={!!fieldErrors.contactInformation} /></label>{errorFor("contactInformation")}
         <label className="form-label full">Email address <span className="required">Required</span><input name="email" type="email" autoComplete="email" required maxLength={254} aria-invalid={!!fieldErrors.email} /></label>{errorFor("email")}
@@ -48,6 +52,7 @@ export function SuggestListing() {
       </div>
       {message && <p className="field-error" role="alert">{message}</p>}
       <button ref={triggerRef} className="button" type="submit" disabled={busy}>{busy ? "Sending…" : "Send suggestion"}</button>
+      <p className="form-privacy">Your contact information is used only to review and follow up on this listing suggestion. It is not published or shared with volunteer organizations.</p>
     </form>
     <dialog ref={dialogRef} className="success-dialog" aria-labelledby="request-success-title" aria-describedby="request-success-copy" onClose={() => triggerRef.current?.focus()}>
       <div className="dialog-mark" aria-hidden="true">✓</div>

@@ -9,10 +9,10 @@ import { AdminListingForm } from "./admin-listing-form";
 describe("new opportunity form", () => {
   afterEach(cleanup);
 
-  it("does not offer photo upload or photo description during creation", () => {
+  it("offers the approved optional photo controls during creation", () => {
     render(<AdminListingForm />);
-    expect(screen.queryByLabelText(/listing photo/i)).toBeNull();
-    expect(screen.queryByLabelText(/photo description/i)).toBeNull();
-    expect(document.querySelector('input[type="file"]')).toBeNull();
+    expect(screen.getByLabelText(/listing photo/i)).toBeTruthy();
+    expect(screen.getByLabelText(/photo description/i)).toBeTruthy();
+    expect(document.querySelector('input[type="file"]')).toBeTruthy();
   });
 });

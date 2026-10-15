@@ -343,6 +343,8 @@ input[type="checkbox"] { width: auto; min-height: auto; }
 .suggest-intro p:last-child { max-width: 430px; color: var(--muted); }
 .suggest-form { display: grid; gap: 18px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--border); border-radius: 18px; background: var(--surface); }
 .suggest-form > .button { justify-self: start; }
+.honeypot-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form-privacy { max-width: 620px; margin: -2px 0 0; color: var(--muted); font-size: .84rem; line-height: 1.5; }
 .success-dialog { position: fixed; inset: 0; width: min(460px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 30px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--ink); box-shadow: 0 22px 70px rgb(0 0 0 / 22%); overflow-y: auto; }
 .success-dialog::backdrop { background: rgb(16 39 29 / 62%); }
 .success-dialog h2 { margin: 14px 0 10px; font-size: 2rem; }

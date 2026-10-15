@@ -27,6 +27,13 @@ describe("listing request API", () => {
     expect(create.mock.calls[0][0].data).toMatchObject({ email: "taylor@example.org", photoUrl: null });
   });
 
+  it("silently discards submissions that fill the honeypot", async () => {
+    const response = await POST(request({ website: "https://spam.example" }));
+    expect(response.status).toBe(201);
+    expect(await response.json()).toEqual({ id: "received" });
+    expect(create).not.toHaveBeenCalled();
+  });
+
   it("rejects public photo attachments without saving the request", async () => {
     const form = await request().formData();
     form.set("photo", new File([new Uint8Array([0xff, 0xd8, 0xff])], "photo.jpg", { type: "image/jpeg" }));

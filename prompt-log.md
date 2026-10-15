@@ -154,3 +154,13 @@
 
 - Defines a reversible editorial archive separately from irreversible, confirmed deletion.
 - Simplifies the first-time listing workflow while preserving existing-listing photo management.
+
+## Public-form abuse protection and privacy notice — October 15, 2026
+
+> Ok i added the rate limit on Vercel. Can you help me integrate the honeypot. And add this next to the user listing request form: Your contact information is used only to review and follow up on this listing suggestion. It is not published or shared with volunteer organizations.
+
+### Builder capabilities demonstrated
+
+- Layers application-level bot filtering on top of an infrastructure-level rate limit.
+- Makes the handling of visitor contact information explicit at the point of collection.
+- Requires spam submissions to be discarded before any personal data reaches the database.

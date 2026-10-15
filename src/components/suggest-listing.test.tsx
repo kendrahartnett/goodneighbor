@@ -10,6 +10,14 @@ describe("listing suggestion confirmation", () => {
   });
   afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
+  it("includes an inaccessible honeypot and explains how contact details are used", () => {
+    render(<SuggestListing />);
+    const honeypot = document.querySelector<HTMLInputElement>('input[name="website"]');
+    expect(honeypot?.tabIndex).toBe(-1);
+    expect(honeypot?.closest("[aria-hidden='true']")).toBeTruthy();
+    expect(screen.getByText(/not published or shared with volunteer organizations/i)).toBeTruthy();
+  });
+
   it("opens a named modal after the request is received and returns focus on close", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ id: "request-1" }) }));
     render(<SuggestListing />);

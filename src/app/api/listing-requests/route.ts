@@ -14,6 +14,10 @@ export async function POST(request: Request) {
   if (Number(request.headers.get("content-length")) > 64 * 1024) return Response.json({ error: { code: "VALIDATION", message: "The request is too large." } }, { status: 400 });
   const form = await request.formData().catch(() => null);
   if (!form) return Response.json({ error: { code: "VALIDATION", message: "Submit the form again." } }, { status: 400 });
+  const website = form.get("website");
+  if (website instanceof File || (typeof website === "string" && website.trim())) {
+    return Response.json({ id: "received" }, { status: 201 });
+  }
   const parsed = listingRequestSchema.safeParse({
     name: form.get("name"), contactInformation: form.get("contactInformation"),
     email: form.get("email"), description: form.get("description"),
