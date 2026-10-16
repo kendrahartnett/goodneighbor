@@ -164,3 +164,16 @@
 - Layers application-level bot filtering on top of an infrastructure-level rate limit.
 - Makes the handling of visitor contact information explicit at the point of collection.
 - Requires spam submissions to be discarded before any personal data reaches the database.
+
+## Shared page texture — October 15, 2026
+
+> I want to add a textured background on all of the apps pages. like something subtle but not just flat. like find a background pattern and replace
+
+### Builder capabilities demonstrated
+
+- Gives precise art direction for a site-wide visual change while keeping the existing palette and readable content surfaces.
+- Reviews the texture in the running app before accepting it.
+
+> Maybe a little stronger, polka dots
+
+- Refines the visual direction after reviewing the first texture and requests a clearer repeating motif.
